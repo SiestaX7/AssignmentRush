@@ -52,13 +52,13 @@ def generate_board():
     for item in range(rows *cols //2):
         option_list.append(item)
     for item in range(rows * cols):
-        piece = option_list[random.randint(0,len(option_list)-1)]
-        spaces.append(piece)
-        if piece in used:
-            used.remove(piece)
-            option_list.remove(piece)
+        number = option_list[random.randint(0,len(option_list)-1)]
+        spaces.append(number)
+        if number in used:
+            used.remove(number)
+            option_list.remove(number)
         else:
-            used.append(piece)
+            used.append(number)
 
 #background and text
 def game_background():
@@ -90,18 +90,18 @@ def draw_board():
     board_list =[]
     for i in range(cols):
         for j in range (rows):
-            piece = pygame.draw.rect(screen,white,[i * 160 + 12,j * 100 + 112,95,75],0,4)
+            number = pygame.draw.rect(screen,white,[i * 160 + 12,j * 100 + 112,95,75],0,4)
                                         #box i =left_right jian ge,j =updown jiange,chang he kuan
-            board_list.append(piece)
-            #piece_text = small_font.render(f'{spaces[i * rows +j]}',True,gray)
-            #screen.blit(piece_text,(i *155+55,j*108+125))
+            board_list.append(number)
+            #number_text = small_font.render(f'{spaces[i * rows +j]}',True,gray)
+            #screen.blit(number_text,(i *155+55,j*108+125))
         
         for row in range(rows):
             for col in range(cols):
                 if  correct[row][col] ==1:
                     pygame.draw.rect(screen,green,[col * 160 + 10,row * 100 + 110,99,79],3,4)
-                    piece_text = small_font.render(f'{spaces[col * rows + row]}',True,black)
-                    screen.blit(piece_text,(col *155+55,row *108+125))
+                    number_text = small_font.render(f'{spaces[col * rows + row]}',True,black)
+                    screen.blit(number_text,(col *155+55,row *108+125))
     return board_list
 #check_guess
 def check_guess(first,second):
@@ -147,9 +147,9 @@ def show_all_numbers():
     draw_board()
     for i in range(cols):
         for j in range(rows):
-            piece_text = small_font.render(f'{spaces[i * rows + j]}', True, black)
+            number_text = small_font.render(f'{spaces[i * rows + j]}', True, black)
             location = (i * 155 + 55, j * 108 + 120)
-            screen.blit(piece_text, location)
+            screen.blit(number_text, location)
     pygame.display.flip() 
     time.sleep(1)
 #game running
@@ -209,12 +209,12 @@ while game_running:
         lose_text = title_font.render("You lose",True,white)
         screen.blit(lose_text,(200,height -325))
     if first_guess :
-        piece_text = small_font.render(f'{spaces[first_guess_num]}',True,black)
+        number_text = small_font.render(f'{spaces[first_guess_num]}',True,black)
         location = (first_guess_num // rows *155 +55,(first_guess_num -(first_guess_num //rows * rows))*108 +120)
-        screen.blit(piece_text,(location))
+        screen.blit(number_text,(location))
     if second_guess:
-        piece_text = small_font.render(f'{spaces[second_guess_num]}',True,black)
+        number_text = small_font.render(f'{spaces[second_guess_num]}',True,black)
         location = (second_guess_num // rows *155 +55,(second_guess_num -(second_guess_num //rows * rows))*108 +120)
-        screen.blit(piece_text,(location))
+        screen.blit(number_text,(location))
     pygame.display.flip()
 pygame.quit()
