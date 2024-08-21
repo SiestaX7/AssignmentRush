@@ -34,8 +34,8 @@ new_board = True
 first_guess =False
 second_guess = False
 Game_over =False
-first_guess_img =0
-second_guess_img =0
+first_guess_num =0
+second_guess_num =0
 Turn = 0
 matches =0
 Wrong = 0
@@ -169,7 +169,7 @@ while game_running:
     restart = game_background()
     board = draw_board()
     if first_guess and second_guess:
-            check_guess(first_guess_img,second_guess_img)
+            check_guess(first_guess_num,second_guess_num)
             first_guess =False
             second_guess =False
             time.sleep(0.5)
@@ -186,11 +186,11 @@ while game_running:
                         continue
                     if button.collidepoint((event.pos)) and not first_guess :
                         first_guess =True
-                        first_guess_img = i
+                        first_guess_num = i
                         print(i)
-                    if button.collidepoint((event.pos)) and not second_guess and first_guess and i != first_guess_img:
+                    if button.collidepoint((event.pos)) and not second_guess and first_guess and i != first_guess_num:
                         second_guess =True
-                        second_guess_img = i
+                        second_guess_num = i
                         print(i)                                      
             if restart.collidepoint((event.pos)):
                 Reset_game()
@@ -209,12 +209,12 @@ while game_running:
         lose_text = title_font.render("You lose",True,white)
         screen.blit(lose_text,(200,height -325))
     if first_guess :
-        piece_text = small_font.render(f'{spaces[first_guess_img]}',True,black)
-        location = (first_guess_img // rows *155 +55,(first_guess_img -(first_guess_img //rows * rows))*108 +120)
+        piece_text = small_font.render(f'{spaces[first_guess_num]}',True,black)
+        location = (first_guess_num // rows *155 +55,(first_guess_num -(first_guess_num //rows * rows))*108 +120)
         screen.blit(piece_text,(location))
     if second_guess:
-        piece_text = small_font.render(f'{spaces[second_guess_img]}',True,black)
-        location = (second_guess_img // rows *155 +55,(second_guess_img -(second_guess_img //rows * rows))*108 +120)
+        piece_text = small_font.render(f'{spaces[second_guess_num]}',True,black)
+        location = (second_guess_num // rows *155 +55,(second_guess_num -(second_guess_num //rows * rows))*108 +120)
         screen.blit(piece_text,(location))
     pygame.display.flip()
 pygame.quit()
