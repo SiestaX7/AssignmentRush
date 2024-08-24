@@ -39,8 +39,6 @@ second_guess_num =0
 Turn = 0
 matches =0
 Wrong = 0
-
-
 #create screen
 screen =pygame.display.set_mode([width, height])
 pygame.display.set_caption("Find Pair Game!")
@@ -94,8 +92,7 @@ def draw_board():
                                         #box i =left_right jian ge,j =updown jiange,chang he kuan
             board_list.append(number)
             #number_text = small_font.render(f'{spaces[i * rows +j]}',True,gray)
-            #screen.blit(number_text,(i *155+55,j*108+125))
-        
+            #screen.blit(number_text,(i *155+55,j*108+125))       
         for row in range(rows):
             for col in range(cols):
                 if  correct[row][col] ==1:
@@ -153,7 +150,6 @@ def show_all_numbers():
     pygame.display.flip() 
     time.sleep(1)
 #game running
-
 game_running = True
 while game_running:
     timer.tick(fps)
@@ -196,8 +192,7 @@ while game_running:
                 Reset_game()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_r:
-                Reset_game()
-    
+                Reset_game()  
     if matches == rows*cols // 2:
         Game_over =True
         win = pygame.draw.rect(screen,black,[10,height -350,width -20,80],0,5)
