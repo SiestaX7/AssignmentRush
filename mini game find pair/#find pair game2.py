@@ -8,7 +8,7 @@ width = 600
 height =600
 cols = 4
 rows = 4
-fps = 60
+fps = 30
 timer = pygame.time.Clock()
 #color
 white =(255, 255, 255)
@@ -61,9 +61,13 @@ def generate_board():
             option_list.remove(image)
         else:
             used.append(image)
-
+#image
+background_img = pygame.image.load("mini game find pair/picture/background.png").convert_alpha()
+restart_img = pygame.image.load("mini game find pair//picture//restart.png").convert_alpha()    
+restart_img = pygame.transform.scale(restart_img, (200, 70))
 #background and text
 def game_background():
+    screen.blit(background_img,(0,0))
     #top
     #top_menu = pygame.draw.rect(screen,black,[0,0,width,100],0)
     #bottom
@@ -165,9 +169,6 @@ def show_all_numbers():
 game_running = True
 while game_running:
     timer.tick(fps)
-    #screen.fill(current_color)
-    background_img = pygame.image.load("mini game find pair/picture/background.png").convert_alpha()
-    pygame.display.flip()
     screen.blit(background_img,(0,0))
     if new_board == True:
         generate_board()
@@ -180,7 +181,7 @@ while game_running:
             check_guess(first_guess_img,second_guess_img)
             first_guess =False
             second_guess =False
-            time.sleep(0.5)
+            pygame.display.flip()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             game_running = False
