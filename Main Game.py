@@ -1,6 +1,8 @@
 # Initiating Game
 import pygame
 import sys
+import pickle
+import os
 pygame.init()
 
 # Colour Library
@@ -11,6 +13,9 @@ white = (255, 255, 255)
 black = (0, 0, 0)
 purple = (127, 0, 255)
 orange = (255, 165, 0)
+
+# File for Saving Data
+save_file = "savegame.pkl"
 
 #Screen
 width, height = 800, 800
@@ -30,6 +35,24 @@ button_width, button_height = 200, 50
 button_x = (width - button_width) //2
 button_y = (height - button_width) //2
 
+# Defining Functions (Save Game)
+def save_game():
+    with open(save_file, "wb") as f:
+        pickle.dump(money,f)
+    print("Game Saved!")
+
+# Defining Functions (Load Game)
+def load_game():
+    global money
+    if os.path.exists(save_file):
+        with open (save_file, "rb") as f:
+            money = pickle.load(f)
+        print("Game Loaded!")
+    else:
+        print("No save file found.")
+
+# Auto Load Game if Save Exists
+load_game()
 
 # Game Running Loop
 running = True
@@ -41,8 +64,10 @@ while running:
 
         # Quit
         if event.type == pygame.QUIT:
-            running = False
-        
+            save_game()
+            pygame.quit()
+            sys.exit
+
         # When Click
         elif event.type == pygame.MOUSEBUTTONDOWN:
             mouse_x, mouse_y = pygame.mouse.get_pos()
@@ -62,6 +87,3 @@ while running:
     # Cap Framerate
     pygame.time.Clock().tick(framerate)
 
-
-pygame.quit()
-sys.exit
