@@ -25,6 +25,7 @@ correct=[[0, 0, 0, 0],
          [0, 0, 0, 0],
          [0, 0, 0, 0],
          [0, 0, 0, 0]]
+image_dict = {}
 #text_font
 title_font = pygame.font.Font('freesansbold.ttf',56)
 small_font = pygame.font.Font('freesansbold.ttf',26)
@@ -34,8 +35,8 @@ new_board = True
 first_guess =False
 second_guess = False
 Game_over =False
-first_guess_num =0
-second_guess_num =0
+first_guess_img =0
+second_guess_img =0
 Turn = 0
 matches =0
 Wrong = 0
@@ -47,16 +48,19 @@ def generate_board():
     global option_list
     global spaces
     global used
+    global image_dict
     for item in range(rows *cols //2):
         option_list.append(item)
+    for i in range(8):
+        image_dict[i] = pygame.image.load(f'mini game find pair/picture/image{i+1}.jpg')
     for item in range(rows * cols):
-        number = option_list[random.randint(0,len(option_list)-1)]
-        spaces.append(number)
-        if number in used:
-            used.remove(number)
-            option_list.remove(number)
+        image = option_list[random.randint(0,len(option_list)-1)]
+        spaces.append(image)
+        if image in used:
+            used.remove(image)
+            option_list.remove(image)
         else:
-            used.append(number)
+            used.append(image)
 
 #background and text
 def game_background():
@@ -85,20 +89,23 @@ def game_background():
 def draw_board():
     global rows
     global cols
+    global image_dict
+
     board_list =[]
     for i in range(cols):
         for j in range (rows):
-            number = pygame.draw.rect(screen,white,[i * 160 + 12,j * 100 + 112,95,75],0,4)
+            image = pygame.draw.rect(screen,white,[i * 160 + 12,j * 100 + 112,95,75],0,4)
                                         #box i =left_right jian ge,j =updown jiange,chang he kuan
-            board_list.append(number)
+            board_list.append(image)
             #number_text = small_font.render(f'{spaces[i * rows +j]}',True,gray)
             #screen.blit(number_text,(i *155+55,j*108+125))       
-        for row in range(rows):
-            for col in range(cols):
-                if  correct[row][col] ==1:
-                    pygame.draw.rect(screen,green,[col * 160 + 10,row * 100 + 110,99,79],3,4)
-                    number_text = small_font.render(f'{spaces[col * rows + row]}',True,black)
-                    screen.blit(number_text,(col *155+55,row *108+125))
+            if correct[j][i] == 1:
+                    pygame.draw.rect(screen, green, [i * 160 + 10, j * 100 + 110, 99, 79], 9, 0)
+                    image = image_dict[spaces[i * rows + j]]
+                    image = pygame.transform.scale(image, (95, 75)) 
+                    screen.blit(image, (i * 160 + 12, j * 100 + 112))
+            else:
+                pygame.draw.rect(screen, white, [i * 160 + 10, j * 100 + 110, 95, 75], 0, 0)
     return board_list
 #check_guess
 def check_guess(first,second):
@@ -144,9 +151,10 @@ def show_all_numbers():
     draw_board()
     for i in range(cols):
         for j in range(rows):
-            number_text = small_font.render(f'{spaces[i * rows + j]}', True, black)
-            location = (i * 155 + 55, j * 108 + 120)
-            screen.blit(number_text, location)
+            image = image_dict[spaces[i * rows + j]]
+            image = pygame.transform.scale(image, (100, 80))
+            location = (i * 160 + 10, j * 100 + 110)
+            screen.blit(image, location)
     pygame.display.flip() 
     time.sleep(1)
 #game running
@@ -154,7 +162,7 @@ game_running = True
 while game_running:
     timer.tick(fps)
     #screen.fill(current_color)
-    background_img = pygame.image.load("picture/background.png").convert_alpha()
+    background_img = pygame.image.load("mini game find pair/picture/background.png").convert_alpha()
     pygame.display.flip()
     screen.blit(background_img,(0,0))
     if new_board == True:
@@ -165,7 +173,7 @@ while game_running:
     restart = game_background()
     board = draw_board()
     if first_guess and second_guess:
-            check_guess(first_guess_num,second_guess_num)
+            check_guess(first_guess_img,second_guess_img)
             first_guess =False
             second_guess =False
             time.sleep(0.5)
@@ -173,7 +181,7 @@ while game_running:
         if event.type == pygame.QUIT:
             game_running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if not Game_over :
+            if not Game_over and Wrong != 4:
                 for i in range(len(board)):
                     button = board[i]
                     row = i % rows
@@ -182,11 +190,11 @@ while game_running:
                         continue
                     if button.collidepoint((event.pos)) and not first_guess :
                         first_guess =True
-                        first_guess_num = i
+                        first_guess_img = i
                         print(i)
-                    if button.collidepoint((event.pos)) and not second_guess and first_guess and i != first_guess_num:
+                    if button.collidepoint((event.pos)) and not second_guess and first_guess and i != first_guess_img:
                         second_guess =True
-                        second_guess_num = i
+                        second_guess_img = i
                         print(i)                                      
             if restart.collidepoint((event.pos)):
                 Reset_game()
@@ -204,12 +212,14 @@ while game_running:
         lose_text = title_font.render("You lose",True,white)
         screen.blit(lose_text,(200,height -325))
     if first_guess :
-        number_text = small_font.render(f'{spaces[first_guess_num]}',True,black)
-        location = (first_guess_num // rows *155 +55,(first_guess_num -(first_guess_num //rows * rows))*108 +120)
-        screen.blit(number_text,(location))
+        image = image_dict[spaces[first_guess_img]]
+        image = pygame.transform.scale(image, (100, 80))
+        location = (first_guess_img // rows * 160 + 10, (first_guess_img % rows) * 100 + 110)#(i * 160 + 10, j * 100 + 110)
+        screen.blit(image, location)
     if second_guess:
-        number_text = small_font.render(f'{spaces[second_guess_num]}',True,black)
-        location = (second_guess_num // rows *155 +55,(second_guess_num -(second_guess_num //rows * rows))*108 +120)
-        screen.blit(number_text,(location))
+        image = image_dict[spaces[second_guess_img]]
+        image = pygame.transform.scale(image, (100, 80))
+        location = (second_guess_img // rows * 160 + 10, (second_guess_img % rows) * 100 + 110)
+        screen.blit(image, location)
     pygame.display.flip()
 pygame.quit()
