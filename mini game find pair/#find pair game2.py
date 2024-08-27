@@ -75,16 +75,20 @@ def game_background():
     #the txet place(left_right,up_down) 
     screen.blit(title_text,(100,20))
     #Restart
-    restart = title_font.render("Restart",True,white )
-    restart_button = pygame.draw.rect(screen,Turquoise,[12,height -85,205,75],0,15)   
-    screen.blit(restart,(15,530))
+    restart_img = pygame.image.load("mini game find pair//picture//restart.png").convert_alpha()    
+    restart_img = pygame.transform.scale(restart_img, (200, 70)) 
+    restart_rect = restart_img.get_rect(bottomleft=(10,height -10)) 
+    screen.blit(restart_img,restart_rect)
+    restart_text = title_font.render("Restart",True,white )
+    text_rect = restart_text.get_rect(center=restart_rect.center)
+    screen.blit(restart_text,text_rect)
     #Turn
     Turn_text = small_font.render(f'Turn :{Turn}',True,black)
     screen.blit(Turn_text,(470,510))
     #Wrong
     Wrong_text = small_font.render(f'Wrong :{Wrong}',True,black)
     screen.blit(Wrong_text,(470,550))
-    return restart_button
+    return restart_rect
 #draw board
 def draw_board():
     global rows
@@ -152,7 +156,7 @@ def show_all_numbers():
     for i in range(cols):
         for j in range(rows):
             image = image_dict[spaces[i * rows + j]]
-            image = pygame.transform.scale(image, (100, 80))
+            image = pygame.transform.scale(image, (97, 77))
             location = (i * 160 + 10, j * 100 + 110)
             screen.blit(image, location)
     pygame.display.flip() 
