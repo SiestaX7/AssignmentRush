@@ -227,6 +227,7 @@ while game_running:
         screen.blit(win_text,(200,height -325))
     if Wrong == 4 and not Game_over_lose:
         Game_over_lose =True
+        time.sleep(1)
         lose_sound.play()
     if Game_over_lose:
         lose = pygame.draw.rect(screen,black,[10,height -350,width -20,80],0,5)
