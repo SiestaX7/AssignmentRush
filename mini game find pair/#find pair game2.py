@@ -34,7 +34,8 @@ current_color =white
 new_board = True 
 first_guess =False
 second_guess = False
-Game_over =False
+Game_over_lose =False
+Game_over_matches =False
 first_guess_img =0
 second_guess_img =0
 Turn = 0
@@ -65,6 +66,12 @@ def generate_board():
 background_img = pygame.image.load("mini game find pair/picture/background.png").convert_alpha()
 restart_img = pygame.image.load("mini game find pair//picture//restart.png").convert_alpha()    
 restart_img = pygame.transform.scale(restart_img, (200, 70))
+#sound effect
+choose_sound = pygame.mixer.Sound('C:\\Users\\User\\Documents\\GitHub\\AssignmentRush\\mini game find pair\\sound\\choose_sound.mp3')
+lose_sound = pygame.mixer.Sound('C:\\Users\\User\\Documents\\GitHub\\AssignmentRush\\mini game find pair\\sound\\lose_sound.mp3')
+wrong_sound = pygame.mixer.Sound('C:\\Users\\User\\Documents\\GitHub\\AssignmentRush\\mini game find pair\\sound\\wrong_sound.mp3')
+correct_sound = pygame.mixer.Sound('C:\\Users\\User\\Documents\\GitHub\\AssignmentRush\\mini game find pair\\sound\\correct_sound.mp3')
+win_sound = pygame.mixer.Sound('C:\\Users\\User\\Documents\\GitHub\\AssignmentRush\\mini game find pair\\sound\\win_sound.mp3')
 #background and text
 def game_background():
     screen.blit(background_img,(0,0))
@@ -132,13 +139,15 @@ def check_guess(first,second):
             Turn += 1
             matches += 1
             print(correct)
+            correct_sound.play()
         
     elif spaces[first] != spaces[second] and correct[row_1][col_1] == 0 and correct[row_2][col_2] == 0 :
         Turn += 1
         Wrong += 1
+        wrong_sound.play()
 #Reset game
 def Reset_game():
-    global option_list,used,spaces,new_board,Turn,Wrong,correct,first_guess,second_guess,Game_over,matches
+    global option_list,used,spaces,new_board,Turn,Wrong,correct,first_guess,second_guess,Game_over_lose ,Game_over_matches ,matches
     option_list =[]
     used =[]
     spaces =[]
@@ -152,7 +161,8 @@ def Reset_game():
               [0, 0, 0, 0]]
     first_guess =False
     second_guess =False
-    Game_over =False
+    Game_over_lose =False
+    Game_over_matches =False
 def show_all_numbers():
     global rows, cols
     game_background()
@@ -181,12 +191,12 @@ while game_running:
             check_guess(first_guess_img,second_guess_img)
             first_guess =False
             second_guess =False
-            pygame.display.flip()
+            time.sleep(0.5)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             game_running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if not Game_over and Wrong != 4:
+            if not Game_over_lose and not Game_over_matches and Wrong != 4:
                 for i in range(len(board)):
                     button = board[i]
                     row = i % rows
@@ -196,23 +206,29 @@ while game_running:
                     if button.collidepoint((event.pos)) and not first_guess :
                         first_guess =True
                         first_guess_img = i
+                        choose_sound.play()
                         print(i)
                     if button.collidepoint((event.pos)) and not second_guess and first_guess and i != first_guess_img:
                         second_guess =True
                         second_guess_img = i
+                        choose_sound.play()
                         print(i)                                      
             if restart.collidepoint((event.pos)):
                 Reset_game()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_r:
                 Reset_game()  
-    if matches == rows*cols // 2:
-        Game_over =True
+    if matches == rows*cols // 2 and not Game_over_matches:
+        Game_over_matches =True
+        win_sound.play()
+    if Game_over_matches:
         win = pygame.draw.rect(screen,black,[10,height -350,width -20,80],0,5)
         win_text = title_font.render("You Win",True,white)
         screen.blit(win_text,(200,height -325))
-    if Wrong == 4:
-        Game_over =True
+    if Wrong == 4 and not Game_over_lose:
+        Game_over_lose =True
+        lose_sound.play()
+    if Game_over_lose:
         lose = pygame.draw.rect(screen,black,[10,height -350,width -20,80],0,5)
         lose_text = title_font.render("You lose",True,white)
         screen.blit(lose_text,(200,height -325))
