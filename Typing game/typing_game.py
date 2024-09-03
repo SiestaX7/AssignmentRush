@@ -15,15 +15,22 @@ GREEN = (0, 128, 0)
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
 FPS = 60
-TEXTBOX_WIDTH = 400
+TEXTBOX_WIDTH = 700
 TEXTBOX_HEIGHT = 100
-word_list = ["assignment", "deadline", "programming"]
 FONT = pygame.font.Font(None,36)
 
-target_word = random.choice(word_list)
+#stages 
+stages = [
+    {"word_list":["assignment", "deadline", "programming"], "time_limit" : 5},
+    {"word_list":["assignment rush game", "deadline is tommorow", "python programming subject"], "time_limit" :7},
+    {"word_list":["Assignment rush game is fun", "The deadline is tommorow", "I like python programming subject"], "time_limit" :10},
+]
+
+current_stage=0
+target_word = random.choice(stages[current_stage]["word_list"])
 user_text = ""
 feedback_message = ""
-time_limit = 5
+time_limit = stages[current_stage]["time_limit"]
 start_ticking = pygame.time.get_ticks()
 
 def draw_textbox():
@@ -36,11 +43,36 @@ def draw_text(text, x, y, color):
 def draw_window(time_left):
     WIN.fill((WHITE))
     draw_textbox()
+    draw_text(f"Stage {current_stage + 1}", 110, 20, BLACK)
     draw_text(f"Type the word:{target_word}", 110, 60, BLACK)
     draw_text(user_text, 110, 120, BLACK)
     draw_text(feedback_message,110,180, RED)
     draw_text(f'Time left: {time_left} seconds', 110, 220, BLACK)
     pygame.display.update()
+
+def reset_game():
+    global target_word,user_text, feedback_message, start_ticking, time_limit
+    if current_stage < len(stages):
+        target_word = random.choice(stages[current_stage]["word_list"])
+        user_text = ""
+        feedback_message = ""
+        time_limit = stages[current_stage]["time_limit"]
+        start_ticking = pygame.time.get_ticks()
+
+def next_stage():
+    global current_stage
+    current_stage += 1
+    if current_stage < len(stages):
+        reset_game()
+    else:
+
+#if no more stages end the game
+        feedback_message = "Congratilations! You have completed all stages!"
+        draw_window(0)
+        pygame.time.delay(3000)
+        pygame.quit()
+        exit()
+
 
 #game function
 def main():
@@ -67,9 +99,7 @@ def main():
                 if event.key == pygame.K_RETURN:
                     if user_text == target_word:
                         feedback_message = "NICE!"
-                        target_word= random.choice(word_list)
-                        user_text =""
-                        start_ticking = pygame.time.get_ticks() #reset timer
+                        next_stage()
                     else:
                         feedback_message = "INCORRECT"
                         user_text = ""       
