@@ -168,7 +168,7 @@ while running:
         for box in row_boxes:
             box.move()
             box.draw(screen)
-    if Wrong == 7:
+    if Wrong == 5:
         Game_over = True
         pygame.draw.rect(screen, black, [10, screen_height - 360, screen_width - 20, 80], 0, 5)
         lose_text = title_font.render("You lose", True, white)
