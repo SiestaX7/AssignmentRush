@@ -6,7 +6,7 @@ pygame.init()
 
 #window display
 WIDTH, HEIGHT = 900, 500
-WIN = pygame.display.set_mode((WIDTH, HEIGHT))
+WIN = pygame.display.set_mode((WIDTH, HEIGHT))  
 pygame.display.set_caption("Typing Game")
 
 #constant and variables
