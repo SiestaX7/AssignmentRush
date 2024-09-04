@@ -22,8 +22,8 @@ FONT = pygame.font.Font(None,36)
 #stages 
 stages = [
     {"word_list":["assignment", "deadline", "programming"], "time_limit" : 5},
-    {"word_list":["assignment rush game", "deadline is tommorow", "python programming subject"], "time_limit" :7},
-    {"word_list":["Assignment rush game is fun", "The deadline is tommorow", "I like python programming subject"], "time_limit" :10},
+    {"word_list":["assignment rush game", "deadline is tomorrow", "python programming subject"], "time_limit" :9},
+    {"word_list":["Assignment rush game is fun", "The deadline is tomorrow", "I like python programming subject"], "time_limit" :12},
 ]
 
 current_stage=0
@@ -65,10 +65,11 @@ def next_stage():
     if current_stage < len(stages):
         reset_game()
     else:
-
+        global feedback_message
 #if no more stages end the game
-        feedback_message = "Congratilations! You have completed all stages!"
+        feedback_message = "Congratulations! You have completed all stages!"
         draw_window(0)
+        pygame.display.update()
         pygame.time.delay(3000)
         pygame.quit()
         exit()
