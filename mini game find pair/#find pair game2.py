@@ -1,247 +1,175 @@
 import pygame
-import time 
 import random
+
+# Initialize Pygame
 pygame.init()
 
-#Windows
-width = 600
-height =600
-cols = 4
-rows = 4
-fps = 30
-timer = pygame.time.Clock()
-#color
-white =(255, 255, 255)
-black =(0, 0, 0)
-red = (255,0 ,0)
-green =(0,255, 0)
-gray = (128,128,128)
-Turquoise =(64,224,208)
-#global variable
-used = []
-option_list = []
-spaces = []
-correct=[[0, 0, 0, 0],
-         [0, 0, 0, 0],
-         [0, 0, 0, 0],
-         [0, 0, 0, 0]]
-image_dict = {}
-#text_font
-title_font = pygame.font.Font('freesansbold.ttf',56)
-small_font = pygame.font.Font('freesansbold.ttf',26)
-#game_setting
-current_color =white
-new_board = True 
-first_guess =False
-second_guess = False
-Game_over_lose =False
-Game_over_matches =False
-first_guess_img =0
-second_guess_img =0
-Turn = 0
-matches =0
-Wrong = 0
-#create screen
-screen =pygame.display.set_mode([width, height])
-pygame.display.set_caption("Find Pair Game!")
-#generated spaced
-def generate_board():
-    global option_list
-    global spaces
-    global used
-    global image_dict
-    for item in range(rows *cols //2):
-        option_list.append(item)
-    for i in range(8):
-        image_dict[i] = pygame.image.load(f'mini game find pair/picture/image{i+1}.jpg')
-    for item in range(rows * cols):
-        image = option_list[random.randint(0,len(option_list)-1)]
-        spaces.append(image)
-        if image in used:
-            used.remove(image)
-            option_list.remove(image)
-        else:
-            used.append(image)
-#image
-background_img = pygame.image.load("mini game find pair/picture/background.png").convert_alpha()
-restart_img = pygame.image.load("mini game find pair//picture//restart.png").convert_alpha()    
-restart_img = pygame.transform.scale(restart_img, (200, 70))
-#sound effect
-choose_sound = pygame.mixer.Sound('C:\\Users\\User\\Documents\\GitHub\\AssignmentRush\\mini game find pair\\sound\\choose_sound.mp3')
-lose_sound = pygame.mixer.Sound('C:\\Users\\User\\Documents\\GitHub\\AssignmentRush\\mini game find pair\\sound\\lose_sound.mp3')
-wrong_sound = pygame.mixer.Sound('C:\\Users\\User\\Documents\\GitHub\\AssignmentRush\\mini game find pair\\sound\\wrong_sound.mp3')
-correct_sound = pygame.mixer.Sound('C:\\Users\\User\\Documents\\GitHub\\AssignmentRush\\mini game find pair\\sound\\correct_sound.mp3')
-win_sound = pygame.mixer.Sound('C:\\Users\\User\\Documents\\GitHub\\AssignmentRush\\mini game find pair\\sound\\win_sound.mp3')
-#background and text
-def game_background():
-    screen.blit(background_img,(0,0))
-    #top
-    #top_menu = pygame.draw.rect(screen,black,[0,0,width,100],0)
-    #bottom
-    #bottom_menu = pygame.draw.rect(screen,black,[0,height -100,width,100],0)
-    #middle
-    #board_space = pygame.draw.rect(screen, gray,[0,100,width,height -200],0)
-    #text
-    title_text = title_font.render('Find Pair Game!',True,white)
-    #the txet place(left_right,up_down) 
-    screen.blit(title_text,(100,20))
-    #Restart
-    restart_img = pygame.image.load("mini game find pair//picture//restart.png").convert_alpha()    
-    restart_img = pygame.transform.scale(restart_img, (200, 70)) 
-    restart_rect = restart_img.get_rect(bottomleft=(10,height -10)) 
-    screen.blit(restart_img,restart_rect)
-    restart_text = title_font.render("Restart",True,white )
-    text_rect = restart_text.get_rect(center=restart_rect.center)
-    screen.blit(restart_text,text_rect)
-    #Turn
-    Turn_text = small_font.render(f'Turn :{Turn}',True,black)
-    screen.blit(Turn_text,(470,510))
-    #Wrong
-    Wrong_text = small_font.render(f'Wrong :{Wrong}',True,black)
-    screen.blit(Wrong_text,(470,550))
-    return restart_rect
-#draw board
-def draw_board():
-    global rows
-    global cols
-    global image_dict
+# Set screen dimensions
+screen_width = 800
+screen_height = 600
+screen = pygame.display.set_mode((screen_width, screen_height))
 
-    board_list =[]
-    for i in range(cols):
-        for j in range (rows):
-            image = pygame.draw.rect(screen,white,[i * 160 + 12,j * 100 + 112,95,75],0,4)
-                                        #box i =left_right jian ge,j =updown jiange,chang he kuan
-            board_list.append(image)
-            #number_text = small_font.render(f'{spaces[i * rows +j]}',True,gray)
-            #screen.blit(number_text,(i *155+55,j*108+125))       
-            if correct[j][i] == 1:
-                    pygame.draw.rect(screen, green, [i * 160 + 10, j * 100 + 110, 99, 79], 9, 0)
-                    image = image_dict[spaces[i * rows + j]]
-                    image = pygame.transform.scale(image, (95, 75)) 
-                    screen.blit(image, (i * 160 + 12, j * 100 + 112))
-            else:
-                pygame.draw.rect(screen, white, [i * 160 + 10, j * 100 + 110, 95, 75], 0, 0)
-    return board_list
-#check_guess
-def check_guess(first,second):
-    global spaces
-    global correct
-    global Turn
-    global matches
-    global Wrong
-    col_1 = first // rows
-    row_1 = first - (col_1 * rows)
-    col_2 = second // rows
-    row_2 = second - (col_2*rows)
-    if spaces[first] == spaces[second] and correct[row_1][col_1] == 0 and correct[row_2][col_2] == 0:
-            correct[row_1][col_1]=1
-            correct[row_2][col_2]=1
-            Turn += 1
-            matches += 1
-            print(correct)
-            correct_sound.play()
-        
-    elif spaces[first] != spaces[second] and correct[row_1][col_1] == 0 and correct[row_2][col_2] == 0 :
-        Turn += 1
+# Text fonts
+title_font = pygame.font.Font('freesansbold.ttf', 56)
+small_font = pygame.font.Font('freesansbold.ttf', 26)
+
+# Game variables
+Turn = 0
+matches = 0
+Wrong = 0
+Game_over = False
+
+# Colors
+white = (255, 255, 255)
+gray = (169, 169, 169)
+black = (0, 0, 0)
+
+# Row heights and speeds
+row_height = [50, 150, 250]  # y-coordinates for the three rows
+row_speed = [1, 2, 1]  # Medium speed for the first and third rows, fast for the second row
+
+# Load and scale images
+images = [pygame.image.load(f"mini game find pair//picture//image{i}.jpg") for i in range(1, 9)]
+scaled_images = [pygame.transform.scale(img, (50, 50)) for img in images]
+
+# Prepare image pairs
+num_boxes = 45  # Total number of boxes needed
+image_pairs = scaled_images * ((num_boxes // len(scaled_images)) + 1)  # Duplicate images as needed
+image_pairs = image_pairs[:num_boxes] * 2  # Ensure pairs for matching
+random.shuffle(image_pairs)
+
+# Box class definition
+class Box:
+    def __init__(self, y_position, speed, initial_x, image, image_id, direction="right"):
+        self.width = 50
+        self.height = 50
+        self.x = initial_x
+        self.y = y_position
+        self.speed = speed
+        self.direction = direction
+        self.image = image
+        self.image_id = image_id
+        self.matched = False
+        self.selected = False
+
+    def move(self):
+        if self.direction == "right":
+            self.x += self.speed
+            if self.x > screen_width:
+                self.x = -self.width
+        elif self.direction == "left":
+            self.x -= self.speed
+            if self.x < -self.width:
+                self.x = screen_width
+
+    def draw(self, screen):
+        if self.matched:
+            return
+        if self.selected:
+            screen.blit(self.image, (self.x, self.y))
+        else:
+            pygame.draw.rect(screen, gray, (self.x, self.y, self.width, self.height))
+
+# Create boxes and assign them to rows
+boxes = []
+num_boxes_per_row = 15
+box_index = 0  
+
+for row_index, row in enumerate(row_height):
+    row_boxes = []
+    min_gap = screen_width // (num_boxes_per_row + 10)
+    initial_positions = [(i * (min_gap + 24.5)) % screen_width for i in range(num_boxes_per_row)]
+    
+    for i in range(num_boxes_per_row):
+        direction = "left" if row_index == 1 else "right"
+        image = image_pairs[box_index]
+        image_id = box_index // 2
+        box = Box(row, row_speed[row_index], initial_positions[i], image, image_id, direction)
+        row_boxes.append(box)
+        box_index += 1
+
+    boxes.append(row_boxes)
+
+# Track selected boxes for matching
+selected_boxes = []
+
+# Function to check guesses
+def check_guess():
+    global Turn, matches, Wrong, selected_boxes, image_pairs
+    first_box, second_box = selected_boxes
+    if first_box.image == second_box.image:  # Check if images match
+        first_box.matched = True
+        second_box.matched = True
+        matches += 1
+        if len(image_pairs) >= 2: 
+            first_box.image = image_pairs.pop()
+            second_box.image = image_pairs.pop()
+            first_box.matched = False
+            second_box.matched = False
+    else:
         Wrong += 1
-        wrong_sound.play()
-#Reset game
-def Reset_game():
-    global option_list,used,spaces,new_board,Turn,Wrong,correct,first_guess,second_guess,Game_over_lose ,Game_over_matches ,matches
-    option_list =[]
-    used =[]
-    spaces =[]
-    new_board = True
+    Turn += 1
+    # Reset selected status for all boxes
+    for box in selected_boxes:
+        box.selected = False
+    selected_boxes = []
+# Function to reset the game
+def reset_game():
+    global Turn, matches, Wrong, Game_over, selected_boxes
     Turn = 0
-    Wrong = 0
     matches = 0
-    correct =[[0, 0, 0, 0],
-              [0, 0, 0, 0],
-              [0, 0, 0, 0],
-              [0, 0, 0, 0]]
-    first_guess =False
-    second_guess =False
-    Game_over_lose =False
-    Game_over_matches =False
-def show_all_numbers():
-    global rows, cols
-    game_background()
-    draw_board()
-    for i in range(cols):
-        for j in range(rows):
-            image = image_dict[spaces[i * rows + j]]
-            image = pygame.transform.scale(image, (97, 77))
-            location = (i * 160 + 10, j * 100 + 110)
-            screen.blit(image, location)
-    pygame.display.flip() 
-    time.sleep(1)
-#game running
-game_running = True
-while game_running:
-    timer.tick(fps)
-    screen.blit(background_img,(0,0))
-    if new_board == True:
-        generate_board()
-        show_all_numbers()
-        print(spaces)
-        new_board = False
-    restart = game_background()
-    board = draw_board()
-    if first_guess and second_guess:
-            check_guess(first_guess_img,second_guess_img)
-            first_guess =False
-            second_guess =False
-            time.sleep(0.5)
+    Wrong = 0
+    Game_over = False
+    selected_boxes = []
+    random.shuffle(image_pairs)
+    # Reinitialize the boxes with shuffled images
+    box_index = 0
+    for row_boxes in boxes:
+        for box in row_boxes:
+            box.image = image_pairs[box_index]
+            box.matched = False
+            box.selected = False
+            box_index += 1
+# Main game loop
+running = True
+clock = pygame.time.Clock()
+while running:    
+    screen.fill(white)
+    Turn_text = small_font.render(f'Turn: {Turn}', True, black)
+    screen.blit(Turn_text, (710, 510))
+    Wrong_text = small_font.render(f'Wrong: {Wrong}', True, black)
+    screen.blit(Wrong_text, (680, 550))
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            game_running = False
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if not Game_over_lose and not Game_over_matches and Wrong != 4:
-                for i in range(len(board)):
-                    button = board[i]
-                    row = i % rows
-                    col = i // rows
-                    if  correct[row][col] == 1:
-                        continue
-                    if button.collidepoint((event.pos)) and not first_guess :
-                        first_guess =True
-                        first_guess_img = i
-                        choose_sound.play()
-                        print(i)
-                    if button.collidepoint((event.pos)) and not second_guess and first_guess and i != first_guess_img:
-                        second_guess =True
-                        second_guess_img = i
-                        choose_sound.play()
-                        print(i)                                      
-            if restart.collidepoint((event.pos)):
-                Reset_game()
-        if event.type == pygame.KEYDOWN:
+            running = False
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            pos = pygame.mouse.get_pos()
+            for row_boxes in boxes:
+                for box in row_boxes:
+                    if not box.matched and box.x < pos[0] < box.x + box.width and box.y < pos[1] < box.y + box.height and not Game_over:
+                        if len(selected_boxes) < 2 and box not in selected_boxes:
+                            selected_boxes.append(box)
+                            box.selected = True
+                            if len(selected_boxes) == 2:
+                                for row_boxes in boxes:
+                                    for box in row_boxes:
+                                        box.move()
+                                        box.draw(screen)
+                                pygame.display.flip()
+                                pygame.time.delay(1000)  # Delay before checking the match
+                                check_guess()
+        elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_r:
-                Reset_game()  
-    if matches == rows*cols // 2 and not Game_over_matches:
-        Game_over_matches =True
-        win_sound.play()
-    if Game_over_matches:
-        win = pygame.draw.rect(screen,black,[10,height -350,width -20,80],0,5)
-        win_text = title_font.render("You Win",True,white)
-        screen.blit(win_text,(200,height -325))
-    if Wrong == 4 and not Game_over_lose:
-        Game_over_lose =True
-        time.sleep(1)
-        lose_sound.play()
-    if Game_over_lose:
-        lose = pygame.draw.rect(screen,black,[10,height -350,width -20,80],0,5)
-        lose_text = title_font.render("You lose",True,white)
-        screen.blit(lose_text,(200,height -325))
-    if first_guess :
-        image = image_dict[spaces[first_guess_img]]
-        image = pygame.transform.scale(image, (100, 80))
-        location = (first_guess_img // rows * 160 + 10, (first_guess_img % rows) * 100 + 110)#(i * 160 + 10, j * 100 + 110)
-        screen.blit(image, location)
-    if second_guess:
-        image = image_dict[spaces[second_guess_img]]
-        image = pygame.transform.scale(image, (100, 80))
-        location = (second_guess_img // rows * 160 + 10, (second_guess_img % rows) * 100 + 110)
-        screen.blit(image, location)
+                reset_game()
+    for row_boxes in boxes:
+        for box in row_boxes:
+            box.move()
+            box.draw(screen)
+    if Wrong == 7:
+        Game_over = True
+        pygame.draw.rect(screen, black, [10, screen_height - 360, screen_width - 20, 80], 0, 5)
+        lose_text = title_font.render("You lose", True, white)
+        screen.blit(lose_text, (300, screen_height - 350))
     pygame.display.flip()
+    clock.tick(60)
 pygame.quit()
