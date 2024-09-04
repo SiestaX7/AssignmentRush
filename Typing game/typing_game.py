@@ -22,8 +22,8 @@ FONT = pygame.font.Font(None,36)
 #stages 
 stages = [
     {"word_list":["assignment", "deadline", "programming"], "time_limit" : 5},
-    {"word_list":["assignment rush game", "deadline is tommorow", "python programming subject"], "time_limit" :7},
-    {"word_list":["Assignment rush game is fun", "The deadline is tommorow", "I like python programming subject"], "time_limit" :10},
+    {"word_list":["assignment rush game", "deadline is tomorrow", "python programming subject"], "time_limit" :7},
+    {"word_list":["Assignment rush game is fun", "The deadline is tomorrow", "I like python programming subject"], "time_limit" :10},
 ]
 
 current_stage=0
