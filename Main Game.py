@@ -38,8 +38,14 @@ passive_upgrade_cost = 20
 
 # Button Size
 button_width, button_height = 500, 50
-button_x = (width - button_width) //2
-button_y = (height - button_width) //2
+
+## (Temp) Load images for buttons instead
+#active_upgrade_image = pygame.image.load("active_button.png")
+#passive_upgrade_image = pygame.image.load("passive_button.png")
+
+## (Temp) Rescaling image to button size
+#active_upgrade_image = pygame.transform.scale(500,50)
+#passive_upgrade_image = pygame.transform.scale(500,50)
 
 # Upgrade Button Positions
 active_upgrade_x, active_upgrade_y = 250, 400
@@ -82,9 +88,8 @@ while running:
         elif event.type == pygame.MOUSEBUTTONDOWN:
             mouse_x, mouse_y = pygame.mouse.get_pos()
             
-            # If Mouse was on main button
-            if button_x <= mouse_x <= button_x + button_width and button_y <= mouse_y <= button_y + button_width:
-                money += click_value
+            # Everytime click, gain currency
+            money += click_value
             
             # If Mouse was on active income upgrade
             if active_upgrade_x <= mouse_x <= active_upgrade_x + button_width and active_upgrade_y <= mouse_y <= active_upgrade_y + button_height:
@@ -107,7 +112,6 @@ while running:
         passive_timer = 0
     
     # Draw Button
-    pygame.draw.rect(screen, green, (button_x, button_y, button_width, button_height))
     pygame.draw.rect(screen, red, (passive_upgrade_x, passive_upgrade_y, button_width, button_height))
     pygame.draw.rect(screen, purple, (active_upgrade_x, active_upgrade_y, button_width, button_height))
 
