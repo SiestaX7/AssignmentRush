@@ -47,6 +47,9 @@ button_width, button_height = 500, 50
 #active_upgrade_image = pygame.transform.scale(500,50)
 #passive_upgrade_image = pygame.transform.scale(500,50)
 
+## (Temp) Click Audio and possibly other audios
+#click_sound = pygame.mixer.sound("click_sound.wav")
+
 # Upgrade Button Positions
 active_upgrade_x, active_upgrade_y = 250, 400
 passive_upgrade_x, passive_upgrade_y = 250, 500
@@ -90,6 +93,9 @@ while running:
             
             # Everytime click, gain currency
             money += click_value
+
+            ## (Temp) Click Sound
+            #click_sound.play()
             
             # If Mouse was on active income upgrade
             if active_upgrade_x <= mouse_x <= active_upgrade_x + button_width and active_upgrade_y <= mouse_y <= active_upgrade_y + button_height:
