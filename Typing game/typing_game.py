@@ -20,12 +20,14 @@ def run_typing_game():
     TEXTBOX_HEIGHT = 100
     FONT = pygame.font.Font(None, 36)
 
+
     # Stages
     stages = [
         {"word_list": ["assignment", "deadline", "programming"], "time_limit": 5},
         {"word_list": ["assignment rush game", "deadline is tomorrow", "python programming subject"], "time_limit": 9},
         {"word_list": ["Assignment rush game is fun", "The deadline is tomorrow", "I like python programming subject"], "time_limit": 12},
     ]
+
 
     current_stage = 0
     target_word = random.choice(stages[current_stage]["word_list"])
@@ -60,15 +62,37 @@ def run_typing_game():
             time_limit = stages[current_stage]["time_limit"]
             start_ticking = pygame.time.get_ticks()
 
-    def next_stage():
-        nonlocal current_stage
-        current_stage += 1
-        if current_stage < len(stages):
-            reset_game()
-        else:
-            global feedback_message
-    #if no more stages end the game
-            feedback_message = "Congratulations! You have completed all stages!"
+
+def next_stage():
+    global current_stage
+    current_stage += 1
+    if current_stage < len(stages):
+        reset_game()
+    else:
+        global feedback_message
+#if no more stages end the game
+        feedback_message = "Congratulations! You have completed all stages!"
+        draw_window(0)
+        pygame.display.update()
+        pygame.time.delay(3000)
+        pygame.quit()
+        exit()
+
+
+#game function
+def main():
+    global target_word, user_text, feedback_message, start_ticking
+    clock = pygame.time.Clock()
+    running=True
+
+    while running:
+        clock.tick(FPS)
+        seconds = (pygame.time.get_ticks() - start_ticking) // 1000
+        time_left = time_limit - seconds #calculate remaining time
+
+        if time_left<=0:
+            feedback_message = "Time's up! Game Over!"
+
             draw_window(0)
             pygame.display.update()
             pygame.time.delay(3000)
