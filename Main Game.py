@@ -168,7 +168,7 @@ passive_upgrade_x, passive_upgrade_y = 250, 500
 rebirth_upgrade_x, rebirth_upgrade_y = 250, 700
 #find pair game variables
 matches = 0
-upgrade_match = 10
+upgrade_match = 1
 Game_over = False
 # Defining Functions (Save Game)
 def save_game():
@@ -276,7 +276,7 @@ def check_guess():
         matches += 1
         
         if matches == upgrade_match:
-            random_upgrade()
+            random_upgrade()            
             matches = 0
         if len(image_pairs) >= 2: 
             first_box.image = image_pairs.pop()
@@ -292,10 +292,16 @@ def random_upgrade():
     upgrade_type = random.choice(['click', 'passive'])
     if upgrade_type == 'click':
         click_value += 1
-        upgrade_message = f"Click value increased to {click_value}"
+        pygame.draw.rect(screen, black, [10, height- 360, width - 20, 80], 0, 5)
+        click_text = font.render("You get upgrade power click", True, white)
+        screen.blit(click_text, (300, height - 350))
+
     elif upgrade_type == 'passive':
         passive_income += 1
-        upgrade_message = f"Passive income increased to {passive_income}"
+        pygame.draw.rect(screen, black, [10, height- 360, width - 20, 80], 0, 5)
+        passive_text = font.render("You get upgrade power passive", True, white)
+        screen.blit(passive_text, (300, height - 350))
+
 # Game Running Loop
 running = True
 while running:
@@ -363,8 +369,9 @@ while running:
                                         box.move()
                                         box.draw(screen)
                                 pygame.display.flip()
-                                pygame.time.delay(200)  # Delay before checking the match
+                                  # Delay before checking the match
                                 check_guess()
+                                pygame.time.delay(200)
         # When Click
         #elif event.type == pygame.MOUSEBUTTONDOWN:
             #mouse_x, mouse_y = pygame.mouse.get_pos()
