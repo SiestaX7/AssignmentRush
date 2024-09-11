@@ -66,15 +66,15 @@ Game_over = False
 # Defining Functions (Save Game)
 def save_game():
     with open(save_file, "wb") as f:
-        pickle.dump((money, click_value, passive_income, passive_upgrade_cost, active_upgrade_cost, rebirth_cost, rebirth_count, rebrith_multiplier),f)
+        pickle.dump((money, click_value, passive_income, passive_upgrade_cost, active_upgrade_cost, rebirth_cost, rebirth_count, rebrith_multiplier, matches),f)
     print("Game Saved!")
 
 # Defining Functions (Load Game)
 def load_game():
-    global money, click_value, passive_income, passive_upgrade_cost, active_upgrade_cost, rebirth_cost, rebirth_count, rebrith_multiplier
+    global money, click_value, passive_income, passive_upgrade_cost, active_upgrade_cost, rebirth_cost, rebirth_count, rebrith_multiplier, matches
     if os.path.exists(save_file):
         with open (save_file, "rb") as f:
-            money, click_value, passive_income, passive_upgrade_cost, active_upgrade_cost, rebirth_cost, rebirth_count, rebrith_multiplier = pickle.load(f)
+            money, click_value, passive_income, passive_upgrade_cost, active_upgrade_cost, rebirth_cost, rebirth_count, rebrith_multiplier, matches = pickle.load(f)
         print("Game Loaded!")
     else:
         print("No save file found.")
