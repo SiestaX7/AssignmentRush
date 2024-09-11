@@ -55,7 +55,7 @@ passive_upgrade_x = (width - button_width) // 2
 passive_upgrade_y = (height - button_height) // 2 + 120
 
 # Timer for Typing Game
-typing_game_interval = 20  # 2 minutes in seconds
+typing_game_interval = 120  # 2 minutes in seconds
 last_typing_game_time = time.time()
 
 # Typing Game Variables
@@ -275,7 +275,7 @@ def check_guess():
         second_box.matched = True
         matches += 1
         
-        if matches == 10:
+        if matches == upgrade_match:
             random_upgrade()
             matches = 0
         if len(image_pairs) >= 2: 
