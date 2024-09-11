@@ -21,7 +21,7 @@ gray = (169,169,169)
 # File for saving data 
 save_file = "savegame.pkl"
 # Screen
-width, height = 800, 800
+width, height = 1000, 800
 screen = pygame.display.set_mode([width, height])
 pygame.display.set_caption("Assignment Rush")
 background = black
@@ -55,7 +55,7 @@ passive_upgrade_x = (width - button_width) // 2
 passive_upgrade_y = (height - button_height) // 2 + 120
 
 # Timer for Typing Game
-typing_game_interval = 120  # 2 minutes in seconds
+typing_game_interval = 20  # 2 minutes in seconds
 last_typing_game_time = time.time()
 
 # Typing Game Variables
@@ -320,15 +320,15 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-        elif event.type == pygame.MOUSEBUTTONDOWN and not typing_game_active:
-            mouse_x, mouse_y = pygame.mouse.get_pos()
+       ## elif event.type == pygame.MOUSEBUTTONDOWN and not typing_game_active:
+           # mouse_x, mouse_y = pygame.mouse.get_pos()
 
-            if button_x <= mouse_x <= button_x + button_width and button_y <= mouse_y <= button_y + button_height:
-                money += click_value
+            #if button_x <= mouse_x <= button_x + button_width and button_y <= mouse_y <= button_y + button_height:
+                #money += click_value
 
-            if active_upgrade_x <= mouse_x <= active_upgrade_x + button_width and active_upgrade_y <= mouse_y <= active_upgrade_y + button_height:
+            #if active_upgrade_x <= mouse_x <= active_upgrade_x + button_width and active_upgrade_y <= mouse_y <= active_upgrade_y + button_height:
 
-                break
+                #break
             #save_game()
             #pygame.quit()
             #sys.exit
@@ -369,16 +369,6 @@ while running:
                     click_value += 1
                     active_upgrade_cost = int(active_upgrade_cost * 1.5)
 
-
-            if passive_upgrade_x <= mouse_x <= passive_upgrade_x + button_width and passive_upgrade_y <= mouse_y <= passive_upgrade_y + button_height:
-                if money >= passive_upgrade_cost:
-                    money -= passive_upgrade_cost
-                    passive_income += 1
-                    passive_upgrade_cost = int(passive_upgrade_cost * 1.5)
-
-        if typing_game_active:
-            handle_typing_game_input(event)
-
             # If Mouse was on passive income upgrade
             if passive_upgrade_x <= pos[0] <= passive_upgrade_x + button_width and passive_upgrade_y <= pos[1] <= passive_upgrade_y + button_height:
                 if money >= passive_upgrade_cost:
@@ -397,7 +387,8 @@ while running:
         money += passive_income * rebrith_multiplier
         passive_timer = 0
 
-
+        if typing_game_active:
+            handle_typing_game_input(event)
     # Check if it's time to start typing game
     current_time = time.time()
     if not typing_game_active and current_time - last_typing_game_time >= typing_game_interval:
