@@ -55,7 +55,7 @@ passive_upgrade_x = (width - button_width) // 2
 passive_upgrade_y = (height - button_height) // 2 + 120
 
 # Timer for Typing Game
-typing_game_interval = 20  # 2 minutes in seconds
+typing_game_interval = 120  # 2 minutes in seconds
 last_typing_game_time = time.time()
 
 # Typing Game Variables
@@ -168,6 +168,7 @@ passive_upgrade_x, passive_upgrade_y = 250, 500
 rebirth_upgrade_x, rebirth_upgrade_y = 250, 700
 #find pair game variables
 matches = 0
+upgrade_match = 10
 Game_over = False
 # Defining Functions (Save Game)
 def save_game():
@@ -273,6 +274,10 @@ def check_guess():
         first_box.matched = True
         second_box.matched = True
         matches += 1
+        
+        if matches == upgrade_match:
+            random_upgrade()
+            matches = 0
         if len(image_pairs) >= 2: 
             first_box.image = image_pairs.pop()
             second_box.image = image_pairs.pop()
@@ -282,6 +287,15 @@ def check_guess():
     for box in selected_boxes:
         box.selected = False
     selected_boxes = []
+def random_upgrade():
+    global click_value, passive_income, rebirth_multiplier, upgrade_message
+    upgrade_type = random.choice(['click', 'passive'])
+    if upgrade_type == 'click':
+        click_value += 1
+        upgrade_message = f"Click value increased to {click_value}"
+    elif upgrade_type == 'passive':
+        passive_income += 1
+        upgrade_message = f"Passive income increased to {passive_income}"
 # Game Running Loop
 running = True
 while running:
