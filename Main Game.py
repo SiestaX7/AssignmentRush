@@ -168,7 +168,7 @@ passive_upgrade_x, passive_upgrade_y = 250, 500
 rebirth_upgrade_x, rebirth_upgrade_y = 250, 700
 #find pair game variables
 matches = 0
-upgrade_match = 1
+upgrade_match = 3
 Game_over = False
 # Defining Functions (Save Game)
 def save_game():
