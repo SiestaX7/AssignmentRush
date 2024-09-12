@@ -168,7 +168,7 @@ passive_upgrade_x, passive_upgrade_y = 250, 500
 rebirth_upgrade_x, rebirth_upgrade_y = 250, 700
 #find pair game variables
 matches = 0
-upgrade_match = 3
+upgrade_match = 10
 Game_over = False
 # Defining Functions (Save Game)
 def save_game():
@@ -287,21 +287,21 @@ def check_guess():
     for box in selected_boxes:
         box.selected = False
     selected_boxes = []
+upgrade_message = ""
+upgrade_message_timer = 0
+UPGRADE_MESSAGE_DURATION = 2 * 60  # 3 seconds at 60 FPS
+
 def random_upgrade():
-    global click_value, passive_income, rebirth_multiplier, upgrade_message
+    global click_value, passive_income, rebirth_multiplier, upgrade_message, upgrade_message_timer
     upgrade_type = random.choice(['click', 'passive'])
     if upgrade_type == 'click':
         click_value += 1
-        pygame.draw.rect(screen, black, [10, height- 360, width - 20, 80], 0, 5)
-        click_text = font.render("You get upgrade power click", True, white)
-        screen.blit(click_text, (300, height - 350))
-
+        upgrade_message = "You get upgrade power click"
     elif upgrade_type == 'passive':
         passive_income += 1
-        pygame.draw.rect(screen, black, [10, height- 360, width - 20, 80], 0, 5)
-        passive_text = font.render("You get upgrade power passive", True, white)
-        screen.blit(passive_text, (300, height - 350))
-
+        upgrade_message = "You get upgrade power passive"
+    
+    upgrade_message_timer = UPGRADE_MESSAGE_DURATION
 # Game Running Loop
 running = True
 while running:
@@ -407,6 +407,13 @@ while running:
     if passive_timer >= 60:
         money += passive_income * rebrith_multiplier
         passive_timer = 0
+
+    # In the main game loop, add this after the event handling:
+    if upgrade_message_timer > 0:
+        pygame.draw.rect(screen, gray, [300, height - 490,  450, 60], 0, 5)
+        message_text = font.render(upgrade_message, True, white)
+        screen.blit(message_text, (380, height - 470))
+        upgrade_message_timer -= 1
 
         if typing_game_active:
             handle_typing_game_input(event)
