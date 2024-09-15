@@ -2,11 +2,10 @@ import pygame
 import sys
 import time
 import random
-# Initialize Pygame
 import pickle
 import os
-import random
 pygame.init()
+#pygame.mixer.init()
 
 # Colour Library
 red = (255, 0, 0)
@@ -27,6 +26,7 @@ pygame.display.set_caption("Assignment Rush")
 background = black
 framerate = 60
 font = pygame.font.Font(None, 30)
+achievement_font = pygame.font.Font(None, 28)
 timer = pygame.time.Clock()
 
 # Game Variables
@@ -38,15 +38,12 @@ rebrith_multiplier = 1
 rebirth_count = 0
 rebirth_cost = 100000
 
-
 # Upgrade Cost
 active_upgrade_cost = 10
 passive_upgrade_cost = 20
 
 # Button Size
 button_width, button_height = 200, 50
-button_x = (width - button_width) // 2
-button_y = (height - button_height) // 2
 
 # Coordinates for upgrades
 active_upgrade_x = (width - button_width) // 2
@@ -201,7 +198,8 @@ def rebirth():
 
 # Auto Load Game if Save Exists
 load_game()
-#find pair
+
+##Find pair
 # Row heights and speeds
 row_height = [100, 165, 235]  # y-coordinates for the three rows
 row_speed = [1, 2, 1]  # Medium speed for the first and third rows, fast for the second row
@@ -320,10 +318,10 @@ while running:
     #screen.blit(passive_upgrade_image, (passive_upgrade_x, passive_upgrade_y))
 
     # Show Cost of Button
-    active_upgrade_text = font.render(f"Upgrade Click (+1): {active_upgrade_cost} marks", True, white)
+    active_upgrade_text = font.render(f"Revise: {active_upgrade_cost} marks", True, white)
     screen.blit(active_upgrade_text, (active_upgrade_x + 10, active_upgrade_y + 10))
 
-    passive_upgrade_text = font.render(f"Upgrade Passive (+1/s): {passive_upgrade_cost} marks", True, white)
+    passive_upgrade_text = font.render(f"Study: {passive_upgrade_cost} marks", True, white)
     screen.blit(passive_upgrade_text, (passive_upgrade_x + 10, passive_upgrade_y + 10))
 
     rebirth_upgrade_text= font.render(f"Rebirth: {rebirth_cost} marks", True, black)
@@ -340,18 +338,6 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-       ## elif event.type == pygame.MOUSEBUTTONDOWN and not typing_game_active:
-           # mouse_x, mouse_y = pygame.mouse.get_pos()
-
-            #if button_x <= mouse_x <= button_x + button_width and button_y <= mouse_y <= button_y + button_height:
-                #money += click_value
-
-            #if active_upgrade_x <= mouse_x <= active_upgrade_x + button_width and active_upgrade_y <= mouse_y <= active_upgrade_y + button_height:
-
-                #break
-            #save_game()
-            #pygame.quit()
-            #sys.exit
         elif event.type == pygame.MOUSEBUTTONDOWN:
             pos = pygame.mouse.get_pos()
             # Everytime click, gain currency
@@ -373,12 +359,7 @@ while running:
                                 check_guess()
                                 pygame.time.delay(200)
         # When Click
-        #elif event.type == pygame.MOUSEBUTTONDOWN:
-            #mouse_x, mouse_y = pygame.mouse.get_pos()
-            
-            # Everytime click, gain currency
-            #money += click_value * rebrith_multiplier
-
+        
             ## (Temp) Click Sound
             #click_sound.play()
             
@@ -431,9 +412,9 @@ while running:
         pygame.draw.rect(screen, purple, (active_upgrade_x, active_upgrade_y, button_width, button_height))
 
         # Show Cost of Button
-        active_upgrade_text = font.render(f"Upgrade Click (+1): {active_upgrade_cost} marks", True, white)
+        active_upgrade_text = font.render(f"Revise: {active_upgrade_cost} marks", True, white)
         screen.blit(active_upgrade_text, (active_upgrade_x + 10, active_upgrade_y + 10))
-        passive_upgrade_text = font.render(f"Upgrade Passive (+1/s): {passive_upgrade_cost} marks", True, white)
+        passive_upgrade_text = font.render(f"Study: {passive_upgrade_cost} marks", True, white)
         screen.blit(passive_upgrade_text, (passive_upgrade_x + 10, passive_upgrade_y + 10))
 
         # Show time until next typing game
@@ -454,9 +435,6 @@ while running:
             box.move()
             box.draw(screen)
     
-
-
-
     # Update Display
     pygame.display.flip()
 
