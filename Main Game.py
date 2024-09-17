@@ -129,8 +129,8 @@ load_game()
 
 ##Find pair
 # Row heights and speeds
-row_height = [100, 165, 235]  # y-coordinates for the three rows
-row_speed = [1, 2, 1]  # Medium speed for the first and third rows, fast for the second row
+row_height = [100, 175, 255]  # y-coordinates for the three rows
+row_speed = [2, 3, 1]  # Medium speed for the first and third rows, fast for the second row
 # Load and scale images
 images = [pygame.image.load(f"mini game find pair//picture//image{i}.jpg") for i in range(1, 9)]
 scaled_images = [pygame.transform.scale(img, (50, 50)) for img in images]
@@ -215,17 +215,17 @@ def check_guess():
     selected_boxes = []
 upgrade_message = ""
 upgrade_message_timer = 0
-UPGRADE_MESSAGE_DURATION = 2 * 60  # 3 seconds at 60 FPS
+UPGRADE_MESSAGE_DURATION = 1 * 60  # 3 seconds at 60 FPS
 
 def random_upgrade():
     global click_value, passive_income, rebirth_multiplier, upgrade_message, upgrade_message_timer
     upgrade_type = random.choice(['click', 'passive'])
     if upgrade_type == 'click':
         click_value += 1
-        upgrade_message = "You get upgrade power click"
+        upgrade_message = "You Get Upgrade Power Click"
     elif upgrade_type == 'passive':
         passive_income += 1
-        upgrade_message = "You get upgrade power passive"
+        upgrade_message = "You Get Upgrade Power Passive"
     
     upgrade_message_timer = UPGRADE_MESSAGE_DURATION
 # Game Running Loop
