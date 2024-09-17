@@ -2,48 +2,49 @@ import pygame
 import random
 import sys
 
-def run_typing_game():
-    pygame.init()
 
-    # Window display
-    WIDTH, HEIGHT = 900, 500
-    WIN = pygame.display.set_mode((WIDTH, HEIGHT))
-    pygame.display.set_caption("Typing Game")
+pygame.init()
 
-    # Constants and variables
-    WHITE = (255, 255, 255)
-    GREEN = (0, 128, 0)
-    BLACK = (0, 0, 0)
-    RED = (255, 0, 0)
-    FPS = 60
-    TEXTBOX_WIDTH = 700
-    TEXTBOX_HEIGHT = 100
-    FONT = pygame.font.Font(None, 36)
+# Window display
+WIDTH, HEIGHT = 900, 500
+WIN = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Typing Game")
 
-    # Stages
-    stages = [
+# Constants and variables
+WHITE = (255, 255, 255)
+GREEN = (0, 128, 0)
+BLACK = (0, 0, 0)
+RED = (255, 0, 0)
+FPS = 60
+TEXTBOX_WIDTH = 700
+TEXTBOX_HEIGHT = 100
+FONT = pygame.font.Font(None, 36)
+
+# Stages
+stages = [
         {"word_list": ["assignment", "deadline", "programming"], "time_limit": 5},
         {"word_list": ["assignment rush game", "deadline is tomorrow", "python programming subject"], "time_limit": 9},
         {"word_list": ["Assignment rush game is fun", "The deadline is tomorrow", "I like python programming subject"], "time_limit": 12},
     ]
-    current_stage = 0
-    target_word = random.choice(stages[current_stage]["word_list"])
-    user_text = ""
-    feedback_message = ""
-    time_limit = stages[current_stage]["time_limit"]
-    start_ticking = pygame.time.get_ticks()  # Initialize the timer
+current_stage = 0
+target_word = random.choice(stages[current_stage]["word_list"])
+user_text = ""
+feedback_message = ""
+time_limit = stages[current_stage]["time_limit"]
+start_ticking = pygame.time.get_ticks()  # Initialize the timer
+completion_file = "Typing_game_completion.txt"
 
     # Function to draw the textbox
-    def draw_textbox():
+def draw_textbox():
         pygame.draw.rect(WIN, GREEN, (100, 50, TEXTBOX_WIDTH, TEXTBOX_HEIGHT))
 
     # Function to draw text
-    def draw_text(text, x, y, color):
+def draw_text(text, x, y, color):
         text_surface = FONT.render(text, True, color)
         WIN.blit(text_surface, (x, y))
 
     # Function to draw the window
-    def draw_window(time_left):
+def draw_window(time_left):
         WIN.fill(WHITE)
         draw_textbox()
         draw_text(f"Stage {current_stage + 1}", 110, 20, BLACK)
@@ -54,8 +55,8 @@ def run_typing_game():
         pygame.display.update()
 
     # Function to reset the game for the next stage
-    def reset_game():
-        nonlocal target_word, user_text, feedback_message, start_ticking, time_limit
+def reset_game():
+        global target_word, user_text, feedback_message, start_ticking, time_limit
         if current_stage < len(stages):
             target_word = random.choice(stages[current_stage]["word_list"])
             user_text = ""
@@ -64,8 +65,8 @@ def run_typing_game():
             start_ticking = pygame.time.get_ticks()
 
     # Function to proceed to the next stage
-    def next_stage():
-        nonlocal current_stage
+def next_stage():
+        global current_stage
         current_stage += 1
         if current_stage < len(stages):
             reset_game()
@@ -75,12 +76,14 @@ def run_typing_game():
             draw_window(0)
             pygame.display.update()
             pygame.time.delay(3000)
+            with open(completion_file, "w") as f:
+                 f.write("completed")
             pygame.quit()
-            sys.exit()
 
+            sys.exit() 
     # Main game loop
-    def main():
-        nonlocal target_word, user_text, feedback_message, start_ticking
+def main():
+        global target_word, user_text, feedback_message, start_ticking
         clock = pygame.time.Clock()
         running = True
 
@@ -117,6 +120,6 @@ def run_typing_game():
         pygame.quit()
         sys.exit()
 
-    main()
+main()
 
-run_typing_game()
+
