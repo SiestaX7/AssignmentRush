@@ -28,6 +28,8 @@ framerate = 60
 font = pygame.font.Font(None, 30)
 achievement_font = pygame.font.Font(None, 28)
 timer = pygame.time.Clock()
+background_image = pygame.image.load("Wooden_Background.png")
+background_image = pygame.transform.scale(background_image, (width,height))
 
 # Game Variables
 money = 0
@@ -93,13 +95,15 @@ from subprocess import call
 def open_py_file():
     call(["python","typing_game.py"])
 
-## (Temp) Load images for buttons instead
-#active_upgrade_image = pygame.image.load("active_button.png")
-#passive_upgrade_image = pygame.image.load("passive_button.png")
+# Load images for buttons instead
+active_upgrade_image = pygame.image.load("Wooden_Button_1.png")
+passive_upgrade_image = pygame.image.load("Wooden_Button_1.png")
+rebirth_upgrade_image = pygame.image.load("Wooden_Button_2.png")
 
-## (Temp) Rescaling image to button size
-#active_upgrade_image = pygame.transform.scale(500,50)
-#passive_upgrade_image = pygame.transform.scale(500,50)
+# Rescaling image to button size
+active_upgrade_image = pygame.transform.scale(active_upgrade_image, (500,50))
+passive_upgrade_image = pygame.transform.scale(passive_upgrade_image, (500,50))
+rebirth_upgrade_image = pygame.transform.scale(rebirth_upgrade_image, (500,50))
 
 ## (Temp) Click Audio and possibly other audios
 #click_sound = pygame.mixer.sound("click_sound.wav")
@@ -108,6 +112,7 @@ def open_py_file():
 active_upgrade_x, active_upgrade_y = 250, 400
 passive_upgrade_x, passive_upgrade_y = 250, 500
 rebirth_upgrade_x, rebirth_upgrade_y = 250, 700
+
 #find pair game variables
 matches = 0
 upgrade_match = 10
@@ -219,7 +224,7 @@ class Box:
         if self.selected:
             screen.blit(self.image, (self.x, self.y))
         else:
-            pygame.draw.rect(screen, gray, (self.x, self.y, self.width, self.height))
+            pygame.draw.rect(screen, black, (self.x, self.y, self.width, self.height))
 # Create boxes and assign them to rows
 boxes = []
 num_boxes_per_row = 6
@@ -286,26 +291,26 @@ while running:
     current_time = time.time() #track current time
     matches_text = font.render(f'Match: {matches}', True,white)
     screen.blit(matches_text, (800, 25))
-    # Draw Button
-    pygame.draw.rect(screen, red, (passive_upgrade_x, passive_upgrade_y, button_width, button_height))
-    pygame.draw.rect(screen, purple, (active_upgrade_x, active_upgrade_y, button_width, button_height))
-    pygame.draw.rect(screen, green, (rebirth_upgrade_x, rebirth_upgrade_y, button_width, button_height))
+
+    # Show Background
+    screen.blit(background_image, (0,0))
 
     # Handling Events
 
-    ## (Temp) Show image as button
-    #screen.blit(active_upgrade_image, (active_upgrade_x, active_upgrade_y))
-    #screen.blit(passive_upgrade_image, (passive_upgrade_x, passive_upgrade_y))
+    #Show image as button
+    screen.blit(active_upgrade_image, (active_upgrade_x, active_upgrade_y))
+    screen.blit(passive_upgrade_image, (passive_upgrade_x, passive_upgrade_y))
+    screen.blit(rebirth_upgrade_image, (rebirth_upgrade_x, rebirth_upgrade_y))
 
     # Show Cost of Button
-    active_upgrade_text = font.render(f"Revise: {active_upgrade_cost} marks", True, white)
-    screen.blit(active_upgrade_text, (active_upgrade_x + 10, active_upgrade_y + 10))
+    active_upgrade_text = font.render(f"Revise: {active_upgrade_cost} marks", True, black)
+    screen.blit(active_upgrade_text, (active_upgrade_x + 50, active_upgrade_y + 20))
 
-    passive_upgrade_text = font.render(f"Study: {passive_upgrade_cost} marks", True, white)
-    screen.blit(passive_upgrade_text, (passive_upgrade_x + 10, passive_upgrade_y + 10))
+    passive_upgrade_text = font.render(f"Study: {passive_upgrade_cost} marks", True, black)
+    screen.blit(passive_upgrade_text, (passive_upgrade_x + 50, passive_upgrade_y + 20))
 
     rebirth_upgrade_text= font.render(f"Rebirth: {rebirth_cost} marks", True, black)
-    screen.blit(rebirth_upgrade_text,(rebirth_upgrade_x + 10, rebirth_upgrade_y +10))
+    screen.blit(rebirth_upgrade_text,(rebirth_upgrade_x + 100, rebirth_upgrade_y + 20))
 
     # Show Money
     money_text = font.render(f"Marks: {money}", True, white)
@@ -424,7 +429,7 @@ while running:
 
     # In the main game loop, add this after the event handling:
     if upgrade_message_timer > 0:
-        pygame.draw.rect(screen, gray, [300, height - 490,  450, 60], 0, 5)
+        pygame.draw.rect(screen, black, [300, height - 490,  450, 60], 0, 5)
         message_text = font.render(upgrade_message, True, white)
         screen.blit(message_text, (380, height - 470))
         upgrade_message_timer -= 1
