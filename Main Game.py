@@ -38,6 +38,7 @@ rebrith_multiplier = 1
 rebirth_count = 0
 rebirth_cost = 100000
 typing_game_reward = 2000
+completion_file = "Typing_game_completion.txt"
 
 # Upgrade Cost
 active_upgrade_cost = 10
@@ -53,7 +54,7 @@ passive_upgrade_x = (width - button_width) // 2
 passive_upgrade_y = (height - button_height) // 2 + 120
 
 # Timer for Typing Game
-typing_game_interval = 60  # 2 minutes in seconds
+typing_game_interval = 60  # 1 minutes in seconds
 last_typing_game_time = time.time()
 
 #Typing game lauch function
@@ -109,6 +110,18 @@ def rebirth():
         rebirth_count += 1
         rebrith_multiplier += 1
         rebirth_cost *= 2
+
+#check if the typing game is completed and reward the player
+def check_typing_game_completion():
+    if os.path.exists(completion_file):
+        print("detected")
+        with open(completion_file,"r")as f:
+            status = f.read().strip()
+        if status == "completed":
+            global money
+            money += typing_game_reward
+            print("Typing game completed. 2000 marks rewarded!")
+            os.remove(completion_file)
 
 # Auto Load Game if Save Exists
 load_game()
@@ -251,6 +264,7 @@ while running:
     #check if its time to trigger typing game
     if current_time - last_typing_game_time >= typing_game_interval:
         open_py_file()
+        check_typing_game_completion()
         last_typing_game_time = time.time()
 
     #show time until the next typing game 
