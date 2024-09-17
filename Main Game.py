@@ -38,6 +38,7 @@ rebrith_multiplier = 1
 rebirth_count = 0
 rebirth_cost = 100000
 
+
 # Upgrade Cost
 active_upgrade_cost = 10
 passive_upgrade_cost = 20
@@ -52,7 +53,7 @@ passive_upgrade_x = (width - button_width) // 2
 passive_upgrade_y = (height - button_height) // 2 + 120
 
 # Timer for Typing Game
-typing_game_interval = 120  # 2 minutes in seconds
+typing_game_interval = 60  # 2 minutes in seconds
 last_typing_game_time = time.time()
 
 #Typing game lauch function

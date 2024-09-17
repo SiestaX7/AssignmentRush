@@ -76,7 +76,8 @@ def run_typing_game():
             pygame.display.update()
             pygame.time.delay(3000)
             pygame.quit()
-            sys.exit()
+
+            sys.exit() 
 
     # Main game loop
     def main():
