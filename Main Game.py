@@ -52,7 +52,7 @@ passive_upgrade_x = (width - button_width) // 2
 passive_upgrade_y = (height - button_height) // 2 + 120
 
 # Timer for Typing Game
-typing_game_interval = 20  # 2 minutes in seconds
+typing_game_interval = 120  # 2 minutes in seconds
 last_typing_game_time = time.time()
 
 #Typing game lauch function
@@ -322,7 +322,10 @@ while running:
                                   # Delay before checking the match
                                 check_guess()
                                 pygame.time.delay(200)
-            # When Click
+
+        # When Click
+        
+
             ## (Temp) Click Sound
             #click_sound.play()
             
