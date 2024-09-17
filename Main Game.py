@@ -16,7 +16,7 @@ black = (0, 0, 0)
 purple = (127, 0, 255)
 orange = (255, 165, 0)
 gray = (169,169,169)
-
+brown =(192, 150, 100)
 # File for saving data 
 save_file = "savegame.pkl"
 # Screen
@@ -185,7 +185,7 @@ load_game()
 ##Find pair
 # Row heights and speeds
 row_height = [100, 175, 255]  # y-coordinates for the three rows
-row_speed = [2, 3, 1]  # Medium speed for the first and third rows, fast for the second row
+row_speed = [3, 4, 2]  # Medium speed for the first and third rows, fast for the second row
 # Load and scale images
 images = [pygame.image.load(f"mini game find pair//picture//image{i}.jpg") for i in range(1, 9)]
 scaled_images = [pygame.transform.scale(img, (50, 50)) for img in images]
@@ -224,7 +224,7 @@ class Box:
         if self.selected:
             screen.blit(self.image, (self.x, self.y))
         else:
-            pygame.draw.rect(screen, black, (self.x, self.y, self.width, self.height))
+            pygame.draw.rect(screen, brown, (self.x, self.y, self.width, self.height))
 # Create boxes and assign them to rows
 boxes = []
 num_boxes_per_row = 6
@@ -432,14 +432,6 @@ while running:
         message_text = font.render(upgrade_message, True, white)
         screen.blit(message_text, (380, height - 470))
         upgrade_message_timer -= 1
-
-        
-    
-        # Show Cost of Button
-        active_upgrade_text = font.render(f"Revise: {active_upgrade_cost} marks", True, white)
-        screen.blit(active_upgrade_text, (active_upgrade_x + 10, active_upgrade_y + 10))
-        passive_upgrade_text = font.render(f"Study: {passive_upgrade_cost} marks", True, white)
-        screen.blit(passive_upgrade_text, (passive_upgrade_x + 10, passive_upgrade_y + 10))
 
         # Show time until next typing game
         time_until_next_game = int(typing_game_interval - (current_time - last_typing_game_time))
