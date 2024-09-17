@@ -45,6 +45,35 @@ completion_file = "Typing_game_completion.txt"
 active_upgrade_cost = 10
 passive_upgrade_cost = 20
 
+achievements = {
+    "Kindergarten": False,
+    "Elementary": False,
+    "Middle School": False,
+    "High School": False,
+    "College": False,
+    "Diploma": False,
+    "Degree": False,
+    "Masters": False,
+    "Doctoral": False,
+    "Professor": False
+}
+
+achievement_conditions = [
+    ("Kindergarten", 0),
+    ("Elementary", 100),
+    ("Middle School", 1000),
+    ("High School", 5000),
+    ("College", 10000),
+    ("Diploma", 25000),
+    ("Degree", 50000),
+    ("Masters", 100000),
+    ("Doctoral", 200000),
+    ("Professor", 500000)
+]
+
+achievement_popup = []
+popup_timer = 0
+popup_duration = 180 # 60=1s
 # Button Size
 button_width, button_height = 200, 50
 
@@ -112,6 +141,27 @@ def rebirth():
         rebrith_multiplier += 1
         rebirth_cost *= 2
 
+# Defining Functions (Unlock Achievements)
+def check_achievements():
+    global achievement_popup
+    for achievement, threshold in achievement_conditions:
+        if not achievements[achievement] and money >= threshold:
+            achievements[achievement] = True
+            achievement_popup.append(f"Achievement Unlocked: {achievement}")
+            print(f"Unlocked {achievement}")
+
+# Defining Functions (Show Achievement Popup)
+def show_achievement_popups():
+    global popup_timer, achievement_popup
+    if achievement_popup:
+        popup_timer += 1
+        if popup_timer <= popup_duration:
+            achievement_text = achievement_popup[0]
+            achievement__surface = achievement_font.render(achievement_text, True, green)
+            screen.blit(achievement__surface, (20, 100))
+        else:
+            achievement_popup.pop(0)
+            popup_timer = 0
 #check if the typing game is completed and reward the player
 def check_typing_game_completion():
     if os.path.exists(completion_file):
@@ -228,6 +278,7 @@ def random_upgrade():
         upgrade_message = "You Get Upgrade Power Passive"
     
     upgrade_message_timer = UPGRADE_MESSAGE_DURATION
+
 # Game Running Loop
 running = True
 while running:
@@ -402,7 +453,12 @@ while running:
         for box in row_boxes:
             box.move()
             box.draw(screen)
-    
+    # Check and Unlock Achievements
+    check_achievements()
+
+    # Show achievement popups
+    show_achievement_popups()
+
     # Update Display
     pygame.display.flip()
 
