@@ -62,9 +62,6 @@ def run_typing_game():
             feedback_message = ""
             time_limit = stages[current_stage]["time_limit"]
             start_ticking = pygame.time.get_ticks()
-    
-    
-
 
     # Function to proceed to the next stage
     def next_stage():
@@ -79,9 +76,9 @@ def run_typing_game():
             pygame.display.update()
             pygame.time.delay(3000)
             pygame.quit()
-            sys.exit(0)  #Exit with code 0 to indicate success
 
-    
+            sys.exit() 
+
     # Main game loop
     def main():
         nonlocal target_word, user_text, feedback_message, start_ticking

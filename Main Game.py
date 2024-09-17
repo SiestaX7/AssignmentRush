@@ -37,7 +37,7 @@ passive_timer = 0
 rebrith_multiplier = 1
 rebirth_count = 0
 rebirth_cost = 100000
-typing_game_reward = 2000
+
 
 # Upgrade Cost
 active_upgrade_cost = 10
