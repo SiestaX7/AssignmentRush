@@ -287,13 +287,12 @@ def random_upgrade():
 # Game Running Loop
 running = True
 while running:
-    screen.fill(black)
-    current_time = time.time() #track current time
-    matches_text = font.render(f'Match: {matches}', True,white)
-    screen.blit(matches_text, (800, 25))
-
     # Show Background
     screen.blit(background_image, (0,0))
+    #screen.fill(black)
+    current_time = time.time() #track current time
+    matches_text = font.render(f'Match: {matches}', True,white)
+    screen.blit(matches_text, (850, 25))
 
     # Handling Events
 
