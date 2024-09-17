@@ -136,9 +136,12 @@ clock = pygame.time.Clock()
 while running:    
     screen.fill(white)
     Turn_text = small_font.render(f'Turn: {Turn}', True, black)
-    screen.blit(Turn_text, (710, 510))
+    screen.blit(Turn_text, (705, 500))
+    matches_text = small_font.render(f'Match: {matches}', True, black)
+    screen.blit(matches_text, (680, 530))    
     Wrong_text = small_font.render(f'Wrong: {Wrong}', True, black)
-    screen.blit(Wrong_text, (680, 550))
+    screen.blit(Wrong_text, (680, 560))
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -156,7 +159,7 @@ while running:
                                         box.move()
                                         box.draw(screen)
                                 pygame.display.flip()
-                                pygame.time.delay(1000)  # Delay before checking the match
+                                pygame.time.delay(500)  # Delay before checking the match
                                 check_guess()
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_r:
@@ -165,7 +168,7 @@ while running:
         for box in row_boxes:
             box.move()
             box.draw(screen)
-    if Wrong == 7:
+    if Wrong == 5:
         Game_over = True
         pygame.draw.rect(screen, black, [10, screen_height - 360, screen_width - 20, 80], 0, 5)
         lose_text = title_font.render("You lose", True, white)

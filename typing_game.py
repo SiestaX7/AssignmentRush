@@ -63,9 +63,6 @@ def reset_game():
             feedback_message = ""
             time_limit = stages[current_stage]["time_limit"]
             start_ticking = pygame.time.get_ticks()
-    
-    
-
 
     # Function to proceed to the next stage
 def next_stage():
@@ -82,9 +79,8 @@ def next_stage():
             with open(completion_file, "w") as f:
                  f.write("completed")
             pygame.quit()
-            sys.exit()  #Exit with code 0 to indicate success
 
-
+            sys.exit() 
     # Main game loop
 def main():
         global target_word, user_text, feedback_message, start_ticking

@@ -40,6 +40,7 @@ rebirth_cost = 100000
 typing_game_reward = 2000
 completion_file = "Typing_game_completion.txt"
 
+
 # Upgrade Cost
 active_upgrade_cost = 10
 passive_upgrade_cost = 20
