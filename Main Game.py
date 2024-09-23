@@ -325,7 +325,7 @@ while running:
 
     #show time until the next typing game 
     time_until_next_game = int(typing_game_interval - (current_time - last_typing_game_time))
-    next_game_text = font.render(f"Next typing game in: {time_until_next_game} seconds", True, white)
+    next_game_text = font.render(f"Test your typing reflexes in: {time_until_next_game} seconds", True, white)
     screen.blit(next_game_text, (width//2 -150, height - 50))
 
 
