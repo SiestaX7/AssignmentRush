@@ -4,6 +4,7 @@ import time
 import random
 import pickle
 import os
+import textwrap
 pygame.init()
 #pygame.mixer.init()
 
@@ -17,6 +18,7 @@ purple = (127, 0, 255)
 orange = (255, 165, 0)
 gray = (169,169,169)
 brown =(192, 150, 100)
+
 # File for saving data 
 save_file = "savegame.pkl"
 # Screen
@@ -117,6 +119,66 @@ rebirth_upgrade_x, rebirth_upgrade_y = 250, 700
 matches = 0
 upgrade_match = 10
 Game_over = False
+
+##Find pair
+# Row heights and speeds
+row_height = [100, 175, 255]  # y-coordinates for the three rows
+row_speed = [2, 3, 1]  # Medium speed for the first and third rows, fast for the second row
+
+# Load and scale images
+images = [pygame.image.load(f"mini game find pair//picture//image{i}.jpg") for i in range(1, 9)]
+scaled_images = [pygame.transform.scale(img, (50, 50)) for img in images]
+
+# Prepare image pairs
+num_boxes = 16  # Total number of boxes needed
+image_pairs = scaled_images * ((num_boxes // len(scaled_images)) + 1)  # Duplicate images as needed
+image_pairs = image_pairs[:num_boxes] * 2  # Ensure pairs for matching
+random.shuffle(image_pairs)
+
+rules_button_width, rules_button_height = 60, 30
+rules_button_rect = pygame.Rect((width - rules_button_width) // 2, 10, rules_button_width, rules_button_height)
+rules_visible = False
+rules_font = pygame.font.Font(None, 24)
+rules_button_font = pygame.font.Font(None, 20)
+
+def create_rules_text():
+    rules = [
+        "Game Rules:",
+        "1. Click to earn marks",
+        "2. Upgrade 'Revise' to increase click value",
+        "3. Upgrade 'Study' for passive income",
+        "4. Match pairs in the mini-game for bonuses",
+        "5. Complete typing games for extra marks",
+        "6. Rebirth to multiply your earnings",
+        "7. Press 'R' to toggle rules visibility"
+    ]
+    return rules
+
+def draw_rules_board(screen):
+    if rules_visible:
+        rules = create_rules_text()
+        board_width = 500
+        line_height = 30
+        board_height = len(rules) * line_height + 20
+        
+        # Draw the board background
+        pygame.draw.rect(screen, (50, 50, 50), (150, 100, board_width, board_height))
+        pygame.draw.rect(screen, white, (150, 100, board_width, board_height), 2)
+        
+        # Draw the rules text
+        for i, rule in enumerate(rules):
+            rule_surface = rules_font.render(rule, True, white)
+            screen.blit(rule_surface, (155, 110 + i * line_height))
+
+def handle_rules_button(event):
+    global rules_visible
+    if event.type == pygame.MOUSEBUTTONDOWN:
+        if rules_button_rect.collidepoint(event.pos):
+            rules_visible = not rules_visible
+    elif event.type == pygame.KEYDOWN:
+        if event.key == pygame.K_r:
+            rules_visible = not rules_visible
+
 # Defining Functions (Save Game)
 def save_game():
     with open(save_file, "wb") as f:
@@ -182,18 +244,6 @@ def check_typing_game_completion():
 # Auto Load Game if Save Exists
 load_game()
 
-##Find pair
-# Row heights and speeds
-row_height = [100, 175, 255]  # y-coordinates for the three rows
-row_speed = [3, 4, 2]  # Medium speed for the first and third rows, fast for the second row
-# Load and scale images
-images = [pygame.image.load(f"mini game find pair//picture//image{i}.jpg") for i in range(1, 9)]
-scaled_images = [pygame.transform.scale(img, (50, 50)) for img in images]
-# Prepare image pairs
-num_boxes = 16  # Total number of boxes needed
-image_pairs = scaled_images * ((num_boxes // len(scaled_images)) + 1)  # Duplicate images as needed
-image_pairs = image_pairs[:num_boxes] * 2  # Ensure pairs for matching
-random.shuffle(image_pairs)
 # Box class definition
 class Box:
     def __init__(self, y_position, speed, initial_x, image, image_id, direction="right"):
@@ -225,6 +275,7 @@ class Box:
             screen.blit(self.image, (self.x, self.y))
         else:
             pygame.draw.rect(screen, black, (self.x, self.y, self.width, self.height))
+
 # Create boxes and assign them to rows
 boxes = []
 num_boxes_per_row = 6
@@ -244,6 +295,7 @@ for row_index, row in enumerate(row_height):
         box_index += 1
 
     boxes.append(row_boxes)
+    
 # Track selected boxes for matching
 selected_boxes = []
 
@@ -287,14 +339,18 @@ def random_upgrade():
 # Game Running Loop
 running = True
 while running:
-    # Show Background
     screen.blit(background_image, (0,0))
-    #screen.fill(black)
     current_time = time.time() #track current time
     matches_text = font.render(f'Match: {matches}', True,white)
-    screen.blit(matches_text, (850, 25))
+    screen.blit(matches_text, (800, 25))
 
-    # Handling Events
+    # Draw Rule Button
+    pygame.draw.rect(screen, (100,100,100), rules_button_rect)
+
+    # Show Rule Button
+    rules_text = rules_button_font.render("Rules", True, white)
+    text_rect = rules_text.get_rect(center=rules_button_rect.center)
+    screen.blit(rules_text, text_rect)
 
     #Show image as button
     screen.blit(active_upgrade_image, (active_upgrade_x, active_upgrade_y))
@@ -302,13 +358,13 @@ while running:
     screen.blit(rebirth_upgrade_image, (rebirth_upgrade_x, rebirth_upgrade_y))
 
     # Show Cost of Button
-    active_upgrade_text = font.render(f"Revise: {active_upgrade_cost} marks", True, black)
+    active_upgrade_text = font.render(f"Study: {active_upgrade_cost} marks", True, black)
     screen.blit(active_upgrade_text, (active_upgrade_x + 50, active_upgrade_y + 20))
 
-    passive_upgrade_text = font.render(f"Study: {passive_upgrade_cost} marks", True, black)
+    passive_upgrade_text = font.render(f"Do Quiz: {passive_upgrade_cost} marks", True, black)
     screen.blit(passive_upgrade_text, (passive_upgrade_x + 50, passive_upgrade_y + 20))
 
-    rebirth_upgrade_text= font.render(f"Rebirth: {rebirth_cost} marks", True, black)
+    rebirth_upgrade_text= font.render(f"Graduate: {rebirth_cost} marks", True, black)
     screen.blit(rebirth_upgrade_text,(rebirth_upgrade_x + 100, rebirth_upgrade_y + 20))
 
     # Show Money
@@ -328,14 +384,33 @@ while running:
     next_game_text = font.render(f"Test your typing reflexes in: {time_until_next_game} seconds", True, white)
     screen.blit(next_game_text, (width//2 -150, height - 50))
 
-
     # Handle events
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        elif event.type == pygame.MOUSEBUTTONDOWN:
+        elif event.type == pygame.MOUSEBUTTONDOWN or event.type == pygame.KEYDOWN:
+            handle_rules_button(event)
+        
+        if event.type == pygame.MOUSEBUTTONDOWN:
             pos = pygame.mouse.get_pos()
             money += click_value * rebrith_multiplier
+            # Upgrade buttons
+            if active_upgrade_x <= pos[0] <= active_upgrade_x + button_width and active_upgrade_y <= pos[1] <= active_upgrade_y + button_height:
+                if money >= active_upgrade_cost:
+                    money -= active_upgrade_cost
+                    click_value += 1
+                    active_upgrade_cost = int(active_upgrade_cost * 1.5)
+            
+            elif passive_upgrade_x <= pos[0] <= passive_upgrade_x + button_width and passive_upgrade_y <= pos[1] <= passive_upgrade_y + button_height:
+                if money >= passive_upgrade_cost:
+                    money -= passive_upgrade_cost
+                    passive_income += 1
+                    passive_upgrade_cost = int(passive_upgrade_cost * 1.5)
+            
+            # If Mouse was on rebirth
+            elif rebirth_upgrade_x <= pos[0] < rebirth_upgrade_x + button_width and rebirth_upgrade_y <= pos[1] <= rebirth_upgrade_y + button_height:
+                if money >= rebirth_cost:
+                    rebirth()
 
             for row_boxes in boxes:
                 for box in row_boxes:
@@ -352,74 +427,7 @@ while running:
                                 pygame.display.flip()
                                 check_guess()
                                 pygame.time.delay(200)
-
-            # Upgrade buttons
-            if active_upgrade_x <= pos[0] <= active_upgrade_x + button_width and active_upgrade_y <= pos[1] <= active_upgrade_y + button_height:
-                if money >= active_upgrade_cost:
-                    money -= active_upgrade_cost
-                    click_value += 1
-                    active_upgrade_cost = int(active_upgrade_cost * 1.5)
-            
-            if passive_upgrade_x <= pos[0] <= passive_upgrade_x + button_width and passive_upgrade_y <= pos[1] <= passive_upgrade_y + button_height:
-                if money >= passive_upgrade_cost:
-                    money -= passive_upgrade_cost
-                    passive_income += 1
-                    passive_upgrade_cost = int(passive_upgrade_cost * 1.5)
-            
-            
-
-#handle event
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            pos = pygame.mouse.get_pos()
-            # Everytime click, gain currency
-            money += click_value * rebrith_multiplier
-            for row_boxes in boxes:
-                for box in row_boxes:
-                    if not box.matched and box.x < pos[0] < box.x + box.width and box.y < pos[1] < box.y + box.height and not Game_over:
-                        if len(selected_boxes) < 2 and box not in selected_boxes:
-                            #money += 1
-                            selected_boxes.append(box)
-                            box.selected = True                           
-                            if len(selected_boxes) == 2:
-                                for row_boxes in boxes:
-                                    for box in row_boxes:
-                                        box.move()
-                                        box.draw(screen)
-                                pygame.display.flip()
-                                  # Delay before checking the match
-                                check_guess()
-                                pygame.time.delay(200)
-
-        # When Click
-        
-
-            ## (Temp) Click Sound
-            #click_sound.play()
-            
-            # If Mouse was on active income upgrade
-            if active_upgrade_x <= pos[0] <= active_upgrade_x + button_width and active_upgrade_y <= pos[1] <= active_upgrade_y + button_height:
-
-                if money >= active_upgrade_cost:
-                    money -= active_upgrade_cost
-                    click_value += 1
-                    active_upgrade_cost = int(active_upgrade_cost * 1.5)
-
-            # If Mouse was on passive income upgrade
-            if passive_upgrade_x <= pos[0] <= passive_upgrade_x + button_width and passive_upgrade_y <= pos[1] <= passive_upgrade_y + button_height:
-                if money >= passive_upgrade_cost:
-                    money -= passive_upgrade_cost
-                    passive_income += 1
-                    passive_upgrade_cost = int(passive_upgrade_cost *1.5)
-            
-            # If Mouse was on rebirth
-            if rebirth_upgrade_x <= pos[0] < rebirth_upgrade_x + button_width and rebirth_upgrade_y <= pos[1] <= rebirth_upgrade_y + button_height:
-                if money >= rebirth_cost:
-                    rebirth()
-
+           
     # Applying Passive Income
     passive_timer += 1
     if passive_timer >= 60:
@@ -433,27 +441,24 @@ while running:
         screen.blit(message_text, (380, height - 470))
         upgrade_message_timer -= 1
 
-        # Show time until next typing game
-        time_until_next_game = int(typing_game_interval - (current_time - last_typing_game_time))
-        next_game_text = font.render(f"Next typing game in: {time_until_next_game} seconds", True, white)
-        screen.blit(next_game_text, (width // 2 - 150, height - 50))
-
-    
-
     # Show Money
     money_text = font.render(f"Marks: {money}", True, white)
     screen.blit(money_text, (20, 20))
 
-    
     for row_boxes in boxes:
         for box in row_boxes:
             box.move()
             box.draw(screen)
+    
     # Check and Unlock Achievements
     check_achievements()
 
     # Show achievement popups
     show_achievement_popups()
+
+    # Draw rules board if visible
+    if rules_visible:
+        draw_rules_board(screen)
 
     # Update Display
     pygame.display.flip()
@@ -463,4 +468,4 @@ while running:
 
 save_game()
 pygame.quit()
-sys.exit
+sys.exit()
