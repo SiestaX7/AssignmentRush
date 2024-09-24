@@ -224,7 +224,7 @@ class Box:
         if self.selected:
             screen.blit(self.image, (self.x, self.y))
         else:
-            pygame.draw.rect(screen, brown, (self.x, self.y, self.width, self.height))
+            pygame.draw.rect(screen, black, (self.x, self.y, self.width, self.height))
 # Create boxes and assign them to rows
 boxes = []
 num_boxes_per_row = 6
