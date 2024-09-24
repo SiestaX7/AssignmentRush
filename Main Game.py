@@ -135,8 +135,11 @@ image_pairs = scaled_images * ((num_boxes // len(scaled_images)) + 1)  # Duplica
 image_pairs = image_pairs[:num_boxes] * 2  # Ensure pairs for matching
 random.shuffle(image_pairs)
 
-rules_button_width, rules_button_height = 60, 30
-rules_button_rect = pygame.Rect((width - rules_button_width) // 2, 10, rules_button_width, rules_button_height)
+original_rules_image = pygame.image.load("mini game find pair//picture//rules.png")
+rules_button_width, rules_button_height = 60, 50  # Adjust these values to your preferred size
+rules_button_image = pygame.transform.scale(original_rules_image, (rules_button_width, rules_button_height))
+rules_button_rect = rules_button_image.get_rect()
+rules_button_rect.topleft = (450, 10)  # Adjust position as needed
 rules_visible = False
 rules_font = pygame.font.Font(None, 24)
 rules_button_font = pygame.font.Font(None, 20)
@@ -168,7 +171,7 @@ def draw_rules_board(screen):
         # Draw the rules text
         for i, rule in enumerate(rules):
             rule_surface = rules_font.render(rule, True, white)
-            screen.blit(rule_surface, (155, 110 + i * line_height))
+            screen.blit(rule_surface, (150, 110 + i * line_height))
 
 def handle_rules_button(event):
     global rules_visible
@@ -345,8 +348,7 @@ while running:
     screen.blit(matches_text, (800, 25))
 
     # Draw Rule Button
-    pygame.draw.rect(screen, (100,100,100), rules_button_rect)
-
+    screen.blit(rules_button_image, rules_button_rect)
     # Show Rule Button
     rules_text = rules_button_font.render("Rules", True, white)
     text_rect = rules_text.get_rect(center=rules_button_rect.center)
