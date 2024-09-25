@@ -43,6 +43,11 @@ start_ticking = pygame.time.get_ticks()
 
 completion_file = "Typing_game_completion.txt"
 
+#bgm 
+pygame.mixer.music.load("typinggamebgm.mp3")
+pygame.mixer.music.set_volume(0.5)
+pygame.mixer.music.play(-1) #-1 mkaes loop indefinitely
+
 
 
 # Function to draw a rounded rectangle
