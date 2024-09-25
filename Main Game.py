@@ -127,7 +127,7 @@ rebirth_upgrade_x, rebirth_upgrade_y = 250, 700
 
 #find pair game variables
 matches = 0
-upgrade_match = 10
+upgrade_match = 3
 Game_over = False
 
 ##Find pair
