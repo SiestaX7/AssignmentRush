@@ -41,7 +41,6 @@ passive_timer = 0
 rebrith_multiplier = 1
 rebirth_count = 0
 rebirth_cost = 100000
-typing_game_reward = 2000
 completion_file = "Typing_game_completion.txt"
 
 
@@ -90,6 +89,8 @@ passive_upgrade_y = (height - button_height) // 2 + 120
 # Timer for Typing Game
 typing_game_interval = 60  # 1 minutes in seconds
 last_typing_game_time = time.time()
+
+typing_game_reward = 5000
 
 #Typing game lauch function
 from subprocess import call
@@ -158,8 +159,8 @@ def create_rules_text():
     rules = [
         "Game Rules:",
         "1. Click to earn marks",
-        "2. Upgrade 'Revise' to increase click value",
-        "3. Upgrade 'Study' for passive income",
+        f"2. Upgrade 'Study' to increase click value ({click_value} marks)",
+        f"3. Upgrade 'Do Quiz' for passive income ({passive_income} marks/s)",
         "4. Match pairs in the mini-game for bonuses",
         "5. Complete typing games for extra marks",
         "6. Rebirth to multiply your earnings",
@@ -295,7 +296,7 @@ def check_typing_game_completion():
         if status == "completed":
             global money
             money += typing_game_reward
-            print("Typing game completed. 2000 marks rewarded!")
+            print(f"Typing game completed. {typing_game_reward} marks rewarded!")
             os.remove(completion_file)
             
 
