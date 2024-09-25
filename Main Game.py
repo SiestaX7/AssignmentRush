@@ -373,9 +373,13 @@ while running:
     # Show Cost of Button
     active_upgrade_text = font.render(f"Study: {active_upgrade_cost} marks", True, black)
     screen.blit(active_upgrade_text, (active_upgrade_x + 50, active_upgrade_y + 20))
+    active_upgrade_text_1 = font.render("+1 Marks/per click", True, black)
+    screen.blit(active_upgrade_text_1, (active_upgrade_x + 275, active_upgrade_y + 20))
 
     passive_upgrade_text = font.render(f"Do Quiz: {passive_upgrade_cost} marks", True, black)
     screen.blit(passive_upgrade_text, (passive_upgrade_x + 50, passive_upgrade_y + 20))
+    passive_upgrade_text_1 = font.render("+1 Marks/s", True, black)
+    screen.blit(passive_upgrade_text_1, (passive_upgrade_x + 345, passive_upgrade_y + 20))
 
     rebirth_upgrade_text= font.render(f"Graduate: {rebirth_cost} marks", True, black)
     screen.blit(rebirth_upgrade_text,(rebirth_upgrade_x + 100, rebirth_upgrade_y + 20))
