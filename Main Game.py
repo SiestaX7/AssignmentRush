@@ -144,7 +144,7 @@ num_boxes = 16  # Total number of boxes needed
 image_pairs = scaled_images * ((num_boxes // len(scaled_images)) + 1)  # Duplicate images as needed
 image_pairs = image_pairs[:num_boxes] * 2  # Ensure pairs for matching
 random.shuffle(image_pairs)
-
+#rules
 original_rules_image = pygame.image.load("mini game find pair//picture//rules.png")
 rules_button_width, rules_button_height = 60, 50  # Adjust these values to your preferred size
 rules_button_image = pygame.transform.scale(original_rules_image, (rules_button_width, rules_button_height))
@@ -181,7 +181,7 @@ def draw_rules_board(screen):
         # Draw the rules text
         for i, rule in enumerate(rules):
             rule_surface = rules_font.render(rule, True, white)
-            screen.blit(rule_surface, (150, 110 + i * line_height))
+            screen.blit(rule_surface, (160, 110 + i * line_height))
 
 def handle_rules_button(event):
     global rules_visible
@@ -192,6 +192,50 @@ def handle_rules_button(event):
         if event.key == pygame.K_r:
             rules_visible = not rules_visible
 
+
+#upgrade detail
+original_upgrade_image = pygame.image.load("mini game find pair//picture//upgrade.png")
+upgrade_button_width, upgrade_button_height = 60, 50  # Adjust these values to your preferred size
+upgrade_button_image = pygame.transform.scale(original_upgrade_image, (upgrade_button_width, upgrade_button_height))
+upgrade_button_rect = upgrade_button_image.get_rect()
+upgrade_button_rect.topleft = (530, 10)  # Adjust position as needed
+upgrade_visible = False
+upgrade_font = pygame.font.Font(None, 24)
+upgrade_button_font = pygame.font.Font(None, 20)
+
+def create_upgrade_text():
+    upgrade = [
+        "Upgrade Detail:",
+        f"Study: {click_value}",
+        f"Do quiz: {passive_income}",
+        f"Graduate:{rebrith_multiplier}"
+    ]
+    return upgrade
+
+def draw_upgrade_board(screen):
+    if upgrade_visible:
+        upgrade = create_upgrade_text()
+        board_width = 150
+        line_height = 20
+        board_height = len(upgrade) * line_height + 20
+        
+        # Draw the board background
+        pygame.draw.rect(screen, (50, 50, 50), (625, 10, board_width, board_height))
+        pygame.draw.rect(screen, white, (625, 10, board_width, board_height), 2)
+        
+        # Draw the rules text
+        for i, upgrade in enumerate(upgrade):
+            upgrade_surface = upgrade_font.render(upgrade, True, white)
+            screen.blit(upgrade_surface, (630, 20 + i * line_height))
+
+def handle_upgrade_button(event):
+    global upgrade_visible
+    if event.type == pygame.MOUSEBUTTONDOWN:
+        if upgrade_button_rect.collidepoint(event.pos):
+            upgrade_visible = not upgrade_visible
+    elif event.type == pygame.KEYDOWN:
+        if event.key == pygame.K_u:
+            upgrade_visible = not upgrade_visible
 # Defining Functions (Save Game)
 def save_game():
     with open(save_file, "wb") as f:
@@ -343,10 +387,10 @@ def random_upgrade():
     upgrade_type = random.choice(['click', 'passive'])
     if upgrade_type == 'click':
         click_value += 1
-        upgrade_message = "You Get Upgrade Power Click"
+        upgrade_message = "You Get Upgrade Study"
     elif upgrade_type == 'passive':
         passive_income += 1
-        upgrade_message = "You Get Upgrade Power Passive"
+        upgrade_message = "You Get Upgrade Do quiz "
     
     upgrade_message_timer = UPGRADE_MESSAGE_DURATION
 
@@ -364,6 +408,12 @@ while running:
     rules_text = rules_button_font.render("Rules", True, white)
     text_rect = rules_text.get_rect(center=rules_button_rect.center)
     screen.blit(rules_text, text_rect)
+    # Draw upgrade Button
+    screen.blit(upgrade_button_image, upgrade_button_rect)
+    # Show Rule Button
+    upgrade_text = upgrade_button_font.render("upgrade", True, white)
+    text_upgrade = upgrade_text.get_rect(center=upgrade_button_rect.center)
+    screen.blit(upgrade_text, text_upgrade)
 
     #Show image as button
     screen.blit(active_upgrade_image, (active_upgrade_x, active_upgrade_y))
@@ -407,6 +457,8 @@ while running:
             running = False
         elif event.type == pygame.MOUSEBUTTONDOWN or event.type == pygame.KEYDOWN:
             handle_rules_button(event)
+        if event.type == pygame.MOUSEBUTTONDOWN or event.type == pygame.KEYDOWN:
+            handle_upgrade_button(event)
         
         if event.type == pygame.MOUSEBUTTONDOWN:
             pos = pygame.mouse.get_pos()
@@ -481,6 +533,9 @@ while running:
     # Draw rules board if visible
     if rules_visible:
         draw_rules_board(screen)
+    # Draw upgrade board if visible
+    if upgrade_visible:
+        draw_upgrade_board(screen)
 
     # Update Display
     pygame.display.flip()
