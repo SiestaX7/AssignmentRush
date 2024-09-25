@@ -6,7 +6,7 @@ import pickle
 import os
 import textwrap
 pygame.init()
-#pygame.mixer.init()
+pygame.mixer.init()
 
 # Colour Library
 red = (255, 0, 0)
@@ -107,8 +107,13 @@ active_upgrade_image = pygame.transform.scale(active_upgrade_image, (500,50))
 passive_upgrade_image = pygame.transform.scale(passive_upgrade_image, (500,50))
 rebirth_upgrade_image = pygame.transform.scale(rebirth_upgrade_image, (500,50))
 
-## (Temp) Click Audio and possibly other audios
-#click_sound = pygame.mixer.sound("click_sound.wav")
+# Click Audio and possibly other audios
+click_sound = pygame.mixer.Sound("click_sound.mp3")
+click_channel = pygame.mixer.Channel(0)
+
+# BGM
+pygame.mixer.music.load("Fun_Piano_BGM_by_Sekuora.mp3")
+pygame.mixer.music.play(-1)
 
 # Upgrade Button Positions
 active_upgrade_x, active_upgrade_y = 250, 400
@@ -396,6 +401,11 @@ while running:
         if event.type == pygame.MOUSEBUTTONDOWN:
             pos = pygame.mouse.get_pos()
             money += click_value * rebrith_multiplier
+
+            # Click Sound
+            if not click_channel.get_busy():
+                click_channel.play(click_sound)
+                
             # Upgrade buttons
             if active_upgrade_x <= pos[0] <= active_upgrade_x + button_width and active_upgrade_y <= pos[1] <= active_upgrade_y + button_height:
                 if money >= active_upgrade_cost:
