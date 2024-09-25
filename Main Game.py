@@ -134,7 +134,7 @@ Game_over = False
 ##Find pair
 # Row heights and speeds
 row_height = [100, 175, 255]  # y-coordinates for the three rows
-row_speed = [2, 3, 1]  # Medium speed for the first and third rows, fast for the second row
+row_speed = [3, 4, 2]  # Medium speed for the first and third rows, fast for the second row
 
 # Load and scale images
 images = [pygame.image.load(f"mini game find pair//picture//image{i}.jpg") for i in range(1, 9)]
