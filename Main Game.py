@@ -95,6 +95,7 @@ last_typing_game_time = time.time()
 from subprocess import call
 
 def open_py_file():
+    pygame.mixer.music.pause()
     call(["python","typing_game.py"])
 
 # Load images for buttons instead
@@ -248,6 +249,8 @@ def check_typing_game_completion():
             money += typing_game_reward
             print("Typing game completed. 2000 marks rewarded!")
             os.remove(completion_file)
+
+            pygame.mixer.music.unpause()
 
 # Auto Load Game if Save Exists
 load_game()
