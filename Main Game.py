@@ -96,7 +96,11 @@ from subprocess import call
 
 def open_py_file():
     pygame.mixer.music.pause()
-    call(["python","typing_game.py"])
+    try:
+        call(["python","typing_game.py"])
+    finally:
+        pygame.mixer.music.unpause()
+
 
 # Load images for buttons instead
 active_upgrade_image = pygame.image.load("Wooden_Button_1.png")
@@ -249,8 +253,7 @@ def check_typing_game_completion():
             money += typing_game_reward
             print("Typing game completed. 2000 marks rewarded!")
             os.remove(completion_file)
-
-            pygame.mixer.music.unpause()
+            
 
 # Auto Load Game if Save Exists
 load_game()
