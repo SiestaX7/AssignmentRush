@@ -147,10 +147,10 @@ image_pairs = image_pairs[:num_boxes] * 2  # Ensure pairs for matching
 random.shuffle(image_pairs)
 #rules
 original_rules_image = pygame.image.load("mini game find pair//picture//rules.png")
-rules_button_width, rules_button_height = 60, 50  # Adjust these values to your preferred size
+rules_button_width, rules_button_height = 50, 40  # Adjust these values to your preferred size
 rules_button_image = pygame.transform.scale(original_rules_image, (rules_button_width, rules_button_height))
 rules_button_rect = rules_button_image.get_rect()
-rules_button_rect.topleft = (450, 10)  # Adjust position as needed
+rules_button_rect.topleft = (445, 9)  # Adjust position as needed
 rules_visible = False
 rules_font = pygame.font.Font(None, 24)
 rules_button_font = pygame.font.Font(None, 20)
@@ -196,10 +196,10 @@ def handle_rules_button(event):
 
 #upgrade detail
 original_upgrade_image = pygame.image.load("mini game find pair//picture//upgrade.png")
-upgrade_button_width, upgrade_button_height = 60, 50  # Adjust these values to your preferred size
+upgrade_button_width, upgrade_button_height = 50, 40  # Adjust these values to your preferred size
 upgrade_button_image = pygame.transform.scale(original_upgrade_image, (upgrade_button_width, upgrade_button_height))
 upgrade_button_rect = upgrade_button_image.get_rect()
-upgrade_button_rect.topleft = (530, 10)  # Adjust position as needed
+upgrade_button_rect.topleft = (509, 10)  # Adjust position as needed
 upgrade_visible = False
 upgrade_font = pygame.font.Font(None, 24)
 upgrade_button_font = pygame.font.Font(None, 20)
@@ -221,13 +221,13 @@ def draw_upgrade_board(screen):
         board_height = len(upgrade) * line_height + 20
         
         # Draw the board background
-        pygame.draw.rect(screen, (50, 50, 50), (625, 10, board_width, board_height))
-        pygame.draw.rect(screen, white, (625, 10, board_width, board_height), 2)
+        pygame.draw.rect(screen, (50, 50, 50), (585, 10, board_width, board_height))
+        pygame.draw.rect(screen, white, (585, 10, board_width, board_height), 2)
         
         # Draw the rules text
         for i, upgrade in enumerate(upgrade):
             upgrade_surface = upgrade_font.render(upgrade, True, white)
-            screen.blit(upgrade_surface, (630, 20 + i * line_height))
+            screen.blit(upgrade_surface, (590, 20 + i * line_height))
 
 def handle_upgrade_button(event):
     global upgrade_visible
@@ -402,7 +402,9 @@ while running:
     current_time = time.time() #track current time
     matches_text = font.render(f'Match: {matches}', True,white)
     screen.blit(matches_text, (800, 25))
-
+    #pygame.draw.rect(screen, (50, 35, 50), (445,10,70,55))
+    pygame.draw.rect(screen, black, (440, 10, 60, 40), 2)
+    pygame.draw.rect(screen, black, (505, 10, 60, 40), 2)
     # Draw Rule Button
     screen.blit(rules_button_image, rules_button_rect)
     # Show Rule Button
@@ -412,7 +414,7 @@ while running:
     # Draw upgrade Button
     screen.blit(upgrade_button_image, upgrade_button_rect)
     # Show Rule Button
-    upgrade_text = upgrade_button_font.render("upgrade", True, white)
+    upgrade_text = upgrade_button_font.render("Upgrade", True, white)
     text_upgrade = upgrade_text.get_rect(center=upgrade_button_rect.center)
     screen.blit(upgrade_text, text_upgrade)
 
