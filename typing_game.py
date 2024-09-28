@@ -25,7 +25,7 @@ FONT_MEDIUM = pygame.font.Font(None, 36)
 FONT_SMALL = pygame.font.Font(None, 24)
 
 # load background image
-background_image = pygame.image.load("typing game ui.jpg")
+background_image = pygame.image.load("Assets//picture//typing game ui.jpg")
 background_image = pygame.transform.scale(background_image,(WIDTH, HEIGHT))
 # Stages
 stages = [
@@ -44,7 +44,7 @@ start_ticking = pygame.time.get_ticks()
 completion_file = "Typing_game_completion.txt"
 
 #bgm 
-pygame.mixer.music.load("typinggamebgm.mp3")
+pygame.mixer.music.load("Assets//audio//typinggamebgm.mp3")
 pygame.mixer.music.set_volume(0.5)
 pygame.mixer.music.play(-1) #-1 mkaes loop indefinitely
 

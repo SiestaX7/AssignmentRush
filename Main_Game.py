@@ -30,7 +30,7 @@ framerate = 60
 font = pygame.font.Font(None, 30)
 achievement_font = pygame.font.Font(None, 28)
 timer = pygame.time.Clock()
-background_image = pygame.image.load("mini game find pair//picture//Wooden_Background.png")
+background_image = pygame.image.load("Assets//picture//Wooden_Background.png")
 background_image = pygame.transform.scale(background_image, (width,height))
 
 # Game Variables
@@ -104,9 +104,9 @@ def open_py_file():
 
 
 # Load images for buttons instead
-active_upgrade_image = pygame.image.load("mini game find pair//picture//Wooden_Button_1.png")
-passive_upgrade_image = pygame.image.load("mini game find pair//picture//Wooden_Button_1.png")
-rebirth_upgrade_image = pygame.image.load("mini game find pair//picture//Wooden_Button_2.png")
+active_upgrade_image = pygame.image.load("Assets//picture//Wooden_Button_1.png")
+passive_upgrade_image = pygame.image.load("Assets//picture//Wooden_Button_1.png")
+rebirth_upgrade_image = pygame.image.load("Assets//picture//Wooden_Button_2.png")
 
 # Rescaling image to button size
 active_upgrade_image = pygame.transform.scale(active_upgrade_image, (500,50))
@@ -114,11 +114,11 @@ passive_upgrade_image = pygame.transform.scale(passive_upgrade_image, (500,50))
 rebirth_upgrade_image = pygame.transform.scale(rebirth_upgrade_image, (500,50))
 
 # Click Audio and possibly other audios
-click_sound = pygame.mixer.Sound("click_sound.mp3")
+click_sound = pygame.mixer.Sound("Assets//audio//click_sound.mp3")
 click_channel = pygame.mixer.Channel(0)
 
 # BGM
-pygame.mixer.music.load("Fun_Piano_BGM_by_Sekuora.mp3")
+pygame.mixer.music.load("Assets//audio//Fun_Piano_BGM_by_Sekuora.mp3")
 pygame.mixer.music.play(-1)
 
 # Upgrade Button Positions
@@ -137,7 +137,7 @@ row_height = [100, 175, 255]  # y-coordinates for the three rows
 row_speed = [3, 4, 2]  # Medium speed for the first and third rows, fast for the second row
 
 # Load and scale images
-images = [pygame.image.load(f"mini game find pair//picture//image{i}.jpg") for i in range(1, 9)]
+images = [pygame.image.load(f"Assets//picture//image{i}.jpg") for i in range(1, 9)]
 scaled_images = [pygame.transform.scale(img, (50, 50)) for img in images]
 
 # Prepare image pairs
@@ -146,7 +146,7 @@ image_pairs = scaled_images * ((num_boxes // len(scaled_images)) + 1)  # Duplica
 image_pairs = image_pairs[:num_boxes] * 2  # Ensure pairs for matching
 random.shuffle(image_pairs)
 #rules
-original_rules_image = pygame.image.load("mini game find pair//picture//rules.png")
+original_rules_image = pygame.image.load("Assets//picture//rules.png")
 rules_button_width, rules_button_height = 50, 40  # Adjust these values to your preferred size
 rules_button_image = pygame.transform.scale(original_rules_image, (rules_button_width, rules_button_height))
 rules_button_rect = rules_button_image.get_rect()
@@ -195,7 +195,7 @@ def handle_rules_button(event):
 
 
 #upgrade detail
-original_upgrade_image = pygame.image.load("mini game find pair//picture//upgrade.png")
+original_upgrade_image = pygame.image.load("Assets//picture//upgrade.png")
 upgrade_button_width, upgrade_button_height = 50, 40  # Adjust these values to your preferred size
 upgrade_button_image = pygame.transform.scale(original_upgrade_image, (upgrade_button_width, upgrade_button_height))
 upgrade_button_rect = upgrade_button_image.get_rect()
