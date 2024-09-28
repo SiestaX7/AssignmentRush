@@ -163,7 +163,7 @@ def create_rules_text():
         f"3. Upgrade 'Do Quiz' for passive income ({passive_income} marks/s)",
         "4. Match pairs in the mini-game for bonuses",
         "5. Complete typing games for extra marks",
-        "6. Rebirth to multiply your earnings",
+        "6. Graduate to multiply your earnings",
         "7. Press 'R' to toggle rules visibility"
     ]
     return rules
@@ -208,8 +208,8 @@ def create_upgrade_text():
     upgrade = [
         "Upgrade Detail:",
         f"Study: {click_value}",
-        f"Do quiz: {passive_income}",
-        f"Graduate:{rebrith_multiplier}"
+        f"Do Projects: {passive_income}",
+        f"Graduations:{rebrith_multiplier}"
     ]
     return upgrade
 
@@ -429,7 +429,7 @@ while running:
     active_upgrade_text_1 = font.render("+1 Marks/per click", True, black)
     screen.blit(active_upgrade_text_1, (active_upgrade_x + 275, active_upgrade_y + 20))
 
-    passive_upgrade_text = font.render(f"Do Quiz: {passive_upgrade_cost} marks", True, black)
+    passive_upgrade_text = font.render(f"Do Project: {passive_upgrade_cost} marks", True, black)
     screen.blit(passive_upgrade_text, (passive_upgrade_x + 50, passive_upgrade_y + 20))
     passive_upgrade_text_1 = font.render("+1 Marks/s", True, black)
     screen.blit(passive_upgrade_text_1, (passive_upgrade_x + 345, passive_upgrade_y + 20))
@@ -440,7 +440,7 @@ while running:
     # Show Money
     money_text = font.render(f"Marks: {money}", True, white)
     screen.blit(money_text, (20, 20))
-    rebirth_text = font.render(f"Rebirths:{rebirth_count}", True, white)
+    rebirth_text = font.render(f"Graduations:{rebirth_count}", True, white)
     screen.blit(rebirth_text, (20, 60)) 
 
     #check if its time to trigger typing game
