@@ -30,7 +30,7 @@ framerate = 60
 font = pygame.font.Font(None, 30)
 achievement_font = pygame.font.Font(None, 28)
 timer = pygame.time.Clock()
-background_image = pygame.image.load("Wooden_Background.png")
+background_image = pygame.image.load("mini game find pair//picture//Wooden_Background.png")
 background_image = pygame.transform.scale(background_image, (width,height))
 
 # Game Variables
@@ -104,9 +104,9 @@ def open_py_file():
 
 
 # Load images for buttons instead
-active_upgrade_image = pygame.image.load("Wooden_Button_1.png")
-passive_upgrade_image = pygame.image.load("Wooden_Button_1.png")
-rebirth_upgrade_image = pygame.image.load("Wooden_Button_2.png")
+active_upgrade_image = pygame.image.load("mini game find pair//picture//Wooden_Button_1.png")
+passive_upgrade_image = pygame.image.load("mini game find pair//picture//Wooden_Button_1.png")
+rebirth_upgrade_image = pygame.image.load("mini game find pair//picture//Wooden_Button_2.png")
 
 # Rescaling image to button size
 active_upgrade_image = pygame.transform.scale(active_upgrade_image, (500,50))
